@@ -278,7 +278,7 @@ def help():
 	print "	Does not zip files prior to hiding them within an image."
 	print "	It is recommended to not use this option, for file names"
 	print "	and their types are not stored unless they are compressed."
-	print "--help"
+	print "--help OR -?"
 	print "	Prints this message."
 	print "\nExample usage:"
 	print "	For hiding files:"
@@ -378,7 +378,7 @@ def parseArgs(argv):
 	
 	#Go through each given argument and 
 	for opt, arg in opts:
-			if opt.lower() == '--help':		#If user requests help, give a little advice
+			elif opt.lower() in ('--help', '-?'):		#If user requests help, give a little advice
 				help()
 				sys.exit()					#Then exit
 			elif opt.lower() in ('-h', '--hide'):#If user sets mode to hide
