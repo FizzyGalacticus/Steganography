@@ -378,7 +378,7 @@ def parseArgs(argv):
 	
 	#Go through each given argument and 
 	for opt, arg in opts:
-			elif opt.lower() in ('--help', '-?'):		#If user requests help, give a little advice
+			if opt.lower() in ('--help', '-?'): #If user requests help, give a little advice
 				help()
 				sys.exit()					#Then exit
 			elif opt.lower() in ('-h', '--hide'):#If user sets mode to hide
