@@ -42,9 +42,9 @@ void MainWindow::_openFileButtonIsPressed()
     //As long as list isn't empty, we have a file.
     if(images.size())
     {
-        _origFilename = images.at(0);
-        _origImage = new QImage(_origFilename);
-        _scaledImage = new QImage(_origImage->scaled(this->width(),this->height()-_openFileButton->height()));
+        _coverFilename = images.at(0);
+        _coverImage = new QImage(_coverFilename);
+        _scaledImage = new QImage(_coverImage->scaled(this->width(),this->height()-_openFileButton->height()));
         _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
 

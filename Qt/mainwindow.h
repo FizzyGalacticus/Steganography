@@ -34,10 +34,10 @@ private:
     QStringList _openFileDialogue(const QString &);
 
     //Image
-    QString _origFilename;
-    QString _newFilename;
+    QString _coverFilename;
+    QString _stegFilename;
     QString _supportedImageFormats;
-    QImage * _origImage;
+    QImage * _coverImage;
     QImage * _scaledImage;
     QLabel * _imageDisplay;
 };
