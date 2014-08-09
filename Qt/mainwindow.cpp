@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _openFileButton(new QPushButton("Open...")),
+    _openCoverImageButton(new QPushButton("Cover...")),
     _supportedImageFormats("Images ("),
     _imageDisplay(new QLabel(this))
 {
@@ -20,12 +20,12 @@ MainWindow::MainWindow(QWidget *parent) :
         else _supportedImageFormats += ' ';
     }
 
-    _openFileButton->setParent(this);
-    _openFileButton->setGeometry(this->width()-50,this->height()-30,50,30);
-    connect(_openFileButton, SIGNAL(clicked()), this, SLOT(_openFileButtonIsPressed()));
-    _openFileButton->show();
+    _openCoverImageButton->setParent(this);
+    _openCoverImageButton->setGeometry(this->width()-50,this->height()-30,50,30);
+    connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
+    _openCoverImageButton->show();
 
-    _imageDisplay->setGeometry(0,0,this->width(),this->height()-_openFileButton->height());
+    _imageDisplay->setGeometry(0,0,this->width(),this->height()-_openCoverImageButton->height());
     _imageDisplay->show();
 }
 
@@ -34,7 +34,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::_openFileButtonIsPressed()
+void MainWindow::_openCoverImageButtonIsPressed()
 {
     qDebug() << "Opening file!";
     QStringList images = _openFileDialogue(_supportedImageFormats);
@@ -44,7 +44,7 @@ void MainWindow::_openFileButtonIsPressed()
     {
         _coverFilename = images.at(0);
         _coverImage = new QImage(_coverFilename);
-        _scaledImage = new QImage(_coverImage->scaled(this->width(),this->height()-_openFileButton->height()));
+        _scaledImage = new QImage(_coverImage->scaled(this->width(),this->height()-_openCoverImageButton->height()));
         _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
 
