@@ -2,6 +2,9 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QImageReader>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QWidget>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,6 +14,13 @@ MainWindow::MainWindow(QWidget *parent) :
     _imageDisplay(new QLabel(this))
 {
     ui->setupUi(this);
+
+    QWidget * centralWidget = new QWidget(this);
+    this->setCentralWidget(centralWidget);
+
+    QVBoxLayout * main = new QVBoxLayout;
+    QHBoxLayout * buttons = new QHBoxLayout;
+    QHBoxLayout * images = new QHBoxLayout;
 
     //Create a string that contains all currently supported image formats
     for(int i = 0; i < QImageReader::supportedImageFormats().size(); i++)
@@ -23,10 +33,14 @@ MainWindow::MainWindow(QWidget *parent) :
     _openCoverImageButton->setParent(this);
     _openCoverImageButton->setGeometry(0,this->height()-30,50,30);
     connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
-    _openCoverImageButton->show();
 
     _imageDisplay->setGeometry(0,0,this->width(),this->height()-_openCoverImageButton->height());
-    _imageDisplay->show();
+
+    buttons->addWidget(_openCoverImageButton);
+    images->addWidget(_imageDisplay);
+    main->addLayout(images);
+    main->addLayout(buttons);
+    centralWidget->setLayout(main);
 }
 
 MainWindow::~MainWindow()
