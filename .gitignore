@@ -30,3 +30,6 @@ push.sh
 # User Profiles
 *.user
 *.user*
+
+#Build directories
+build*
