@@ -61,9 +61,10 @@ void MainWindow::_openCoverImageButtonIsPressed()
         _coverImage = new QImage(_coverFilename);
         _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
         _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
-    }
 
-    qDebug() << "File opened!";
+        qDebug() << "File opened!";
+    }
+    else qDebug() << "No file selected!";
 }
 
 QStringList MainWindow::_openFileDialogue(const QString & formats)
