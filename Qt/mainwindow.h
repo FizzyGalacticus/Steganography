@@ -22,13 +22,13 @@ public:
 
 private slots:
     //Open File button
-    void _openFileButtonIsPressed();
+    void _openFileButtonButtonIsPressed();
 
 private:
     Ui::MainWindow *ui;
 
     //Open file button
-    QPushButton * _openFile;
+    QPushButton * _openFileButton;
 
     //Open File Dialogue
     QStringList _openFileDialogue();

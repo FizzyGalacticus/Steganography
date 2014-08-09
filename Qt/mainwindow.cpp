@@ -6,17 +6,17 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    _openFile(new QPushButton("Open...")),
+    _openFileButton(new QPushButton("Open...")),
     _imageDisplay(new QLabel(this))
 {
     ui->setupUi(this);
 
-    _openFile->setParent(this);
-    _openFile->setGeometry(0,0,50,30);
-    connect(_openFile, SIGNAL(clicked()), this, SLOT(_openFileButtonIsPressed()));
-    _openFile->show();
+    _openFileButton->setParent(this);
+    _openFileButton->setGeometry(this->width()-50,this->height()-30,50,30);
+    connect(_openFileButton, SIGNAL(clicked()), this, SLOT(_openFileButtonButtonIsPressed()));
+    _openFileButton->show();
 
-    _imageDisplay->setGeometry(0,_openFile->height(),this->width(),this->height()-_openFile->height());
+    _imageDisplay->setGeometry(0,0,this->width(),this->height()-_openFileButton->height());
     _imageDisplay->show();
 }
 
@@ -25,7 +25,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::_openFileButtonIsPressed()
+void MainWindow::_openFileButtonButtonIsPressed()
 {
     qDebug() << "Opening file!";
     QStringList images = _openFileDialogue();
@@ -35,7 +35,7 @@ void MainWindow::_openFileButtonIsPressed()
     {
         _origFilename = images.at(0);
         _origImage = new QImage(_origFilename);
-        _scaledImage = new QImage(_origImage->scaled(this->width(),this->height()-_openFile->height()));
+        _scaledImage = new QImage(_origImage->scaled(this->width(),this->height()-_openFileButton->height()));
         _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
 
