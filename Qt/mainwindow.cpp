@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _imageDisplay(new QLabel(this))
 {
     ui->setupUi(this);
+    this->setMinimumSize(100,100);
 
     QWidget * centralWidget = new QWidget(this);
     this->setCentralWidget(centralWidget);
@@ -33,8 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _openCoverImageButton->setParent(this);
     _openCoverImageButton->setGeometry(0,this->height()-30,50,30);
     connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
-
-    _imageDisplay->setGeometry(0,0,this->width(),this->height()-_openCoverImageButton->height());
 
     buttons->addWidget(_openCoverImageButton);
     images->addWidget(_imageDisplay);
@@ -58,7 +57,7 @@ void MainWindow::_openCoverImageButtonIsPressed()
     {
         _coverFilename = images.at(0);
         _coverImage = new QImage(_coverFilename);
-        _scaledImage = new QImage(_coverImage->scaled(this->width(),this->height()-_openCoverImageButton->height()));
+        _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
         _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
 
@@ -80,4 +79,14 @@ QStringList MainWindow::_openFileDialogue(const QString & formats)
        fileNames = openFileDialog.selectedFiles();
 
     return fileNames;
+}
+
+void MainWindow::resizeEvent ( QResizeEvent * event )
+{
+    if(_coverFilename.size())
+    {
+        delete _scaledImage;
+        _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
+        _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
+    }
 }

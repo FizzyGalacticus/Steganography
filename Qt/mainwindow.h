@@ -20,6 +20,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void resizeEvent (QResizeEvent *);
+
 private slots:
     //Open File button
     void _openCoverImageButtonIsPressed();
