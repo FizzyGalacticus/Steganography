@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <QResizeEvent>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -55,6 +56,7 @@ void MainWindow::_openCoverImageButtonIsPressed()
     //As long as list isn't empty, we have a file.
     if(images.size())
     {
+        delete _scaledImage;
         _coverFilename = images.at(0);
         _coverImage = new QImage(_coverFilename);
         _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
@@ -89,4 +91,6 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
         _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
         _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
+
+    qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
 }
