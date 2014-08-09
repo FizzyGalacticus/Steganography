@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     _openCoverImageButton->setParent(this);
-    _openCoverImageButton->setGeometry(this->width()-50,this->height()-30,50,30);
+    _openCoverImageButton->setGeometry(0,this->height()-30,50,30);
     connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
     _openCoverImageButton->show();
 
