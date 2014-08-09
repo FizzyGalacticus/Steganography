@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QStringList>
 #include <QFileDialog>
+#include <QImage>
+#include <QLabel>
 
 namespace Ui {
 class MainWindow;
@@ -34,6 +36,9 @@ private:
     //Image
     QString _origFilename;
     QString _newFilename;
+    QImage * _origImage;
+    QImage * _scaledImage;
+    QLabel * _imageDisplay;
 };
 
 #endif // MAINWINDOW_H
