@@ -17,7 +17,8 @@ public:
     ~MainWindow();
 
 private slots:
-
+    //Open File button
+    void _openFileButtonIsPressed();
 
 private:
     Ui::MainWindow *ui;
