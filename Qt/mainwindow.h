@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QStringList>
+#include <QFileDialog>
 
 namespace Ui {
 class MainWindow;
@@ -25,6 +27,13 @@ private:
 
     //Open file button
     QPushButton * _openFile;
+
+    //Open File Dialogue
+    QStringList _openFileDialogue();
+
+    //Image
+    QString _origFilename;
+    QString _newFilename;
 };
 
 #endif // MAINWINDOW_H
