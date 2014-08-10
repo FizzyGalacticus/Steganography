@@ -6,10 +6,12 @@
 void MainWindow::_setupButtons()
 {
     connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
+    connect(_openPayloadButton, SIGNAL(clicked()), this, SLOT(_openPayloadButtonIsPressed()));
 
     QHBoxLayout * buttons = new QHBoxLayout;
 
     buttons->addWidget(_openCoverImageButton);
+    buttons->addWidget(_openPayloadButton);
 
     _mainLayout->addLayout(buttons);
 }

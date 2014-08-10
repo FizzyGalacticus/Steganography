@@ -25,8 +25,9 @@ public:
     void resizeEvent (QResizeEvent *);
 
 private slots:
-    //Open File button
+    //Open File buttons
     void _openCoverImageButtonIsPressed();
+    void _openPayloadButtonIsPressed();
 
 private:
     Ui::MainWindow *ui;
@@ -35,19 +36,22 @@ private:
     QWidget * _centralWidget;
     QVBoxLayout * _mainLayout;
 
-    //Open file button
+    //Open file buttons
     QPushButton * _openCoverImageButton;
+    QPushButton * _openPayloadButton;
 
     //Open File Dialogue
     QStringList _openFileDialogue(const QString &);
 
-    //Image
+    //Image Manipulation Variables
     QString _coverFilename;
-    QString _stegFilename;
     QString _supportedImageFormats;
     QImage * _coverImage;
     QImage * _scaledImage;
     QLabel * _imageDisplay;
+
+    //Payload File Name Variable
+    QStringList * _payloads;
 
     //Setup functions
     void _setup();

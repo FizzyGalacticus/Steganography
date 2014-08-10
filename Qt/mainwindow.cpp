@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _centralWidget(new QWidget(this)),
     _mainLayout(new QVBoxLayout),
     _openCoverImageButton(new QPushButton("Cover...")),
+    _openPayloadButton(new QPushButton("Payload...")),
     _supportedImageFormats("Images ("),
     _imageDisplay(new QLabel(this))
 {
@@ -43,7 +44,6 @@ void MainWindow::_openCoverImageButtonIsPressed()
     //As long as list isn't empty, we have a file.
     if(images.size())
     {
-        delete _scaledImage;
         _coverFilename = images.at(0);
         _coverImage = new QImage(_coverFilename);
         _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
@@ -52,6 +52,15 @@ void MainWindow::_openCoverImageButtonIsPressed()
         qDebug() << "File opened!";
     }
     else qDebug() << "No file selected!";
+}
+
+void MainWindow::_openPayloadButtonIsPressed()
+{
+    qDebug() << "Opening file!";
+    _payloads = new QStringList(_openFileDialogue(("")));
+
+    if(_payloads->size()) qDebug() << "File(s) opened!";
+    else qDebug() << "No file(s) selected!";
 }
 
 QStringList MainWindow::_openFileDialogue(const QString & formats)
