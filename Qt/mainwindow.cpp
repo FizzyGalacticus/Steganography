@@ -10,19 +10,15 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    _centralWidget(new QWidget(this)),
+    _mainLayout(new QVBoxLayout),
     _openCoverImageButton(new QPushButton("Cover...")),
     _supportedImageFormats("Images ("),
     _imageDisplay(new QLabel(this))
 {
     ui->setupUi(this);
     this->setMinimumSize(100,100);
-
-    QWidget * centralWidget = new QWidget(this);
-    this->setCentralWidget(centralWidget);
-
-    QVBoxLayout * main = new QVBoxLayout;
-    QHBoxLayout * buttons = new QHBoxLayout;
-    QHBoxLayout * images = new QHBoxLayout;
+    this->setCentralWidget(_centralWidget);
 
     //Create a string that contains all currently supported image formats
     for(int i = 0; i < QImageReader::supportedImageFormats().size(); i++)
@@ -32,15 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
         else _supportedImageFormats += ' ';
     }
 
-    _openCoverImageButton->setParent(this);
-    _openCoverImageButton->setGeometry(0,this->height()-30,50,30);
-    connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
-
-    buttons->addWidget(_openCoverImageButton);
-    images->addWidget(_imageDisplay);
-    main->addLayout(images);
-    main->addLayout(buttons);
-    centralWidget->setLayout(main);
+    _setup();
 }
 
 MainWindow::~MainWindow()
@@ -94,4 +82,32 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
     }
 
     qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
+}
+
+void MainWindow::_setupButtons()
+{
+    connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
+
+    QHBoxLayout * buttons = new QHBoxLayout;
+
+    buttons->addWidget(_openCoverImageButton);
+
+    _mainLayout->addLayout(buttons);
+}
+
+void MainWindow::_setupImageDisplay()
+{
+    QHBoxLayout * images = new QHBoxLayout;
+
+    images->addWidget(_imageDisplay);
+
+    _mainLayout->addLayout(images);
+}
+
+void MainWindow::_setup()
+{
+    _setupImageDisplay();
+    _setupButtons();
+
+    _centralWidget->setLayout(_mainLayout);
 }

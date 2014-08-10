@@ -7,6 +7,8 @@
 #include <QFileDialog>
 #include <QImage>
 #include <QLabel>
+#include <QWidget>
+#include <QVBoxLayout>
 
 namespace Ui {
 class MainWindow;
@@ -29,6 +31,10 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    //Central Widget & Layout
+    QWidget * _centralWidget;
+    QVBoxLayout * _mainLayout;
+
     //Open file button
     QPushButton * _openCoverImageButton;
 
@@ -42,6 +48,11 @@ private:
     QImage * _coverImage;
     QImage * _scaledImage;
     QLabel * _imageDisplay;
+
+    //Setup functions
+    void _setup();
+    void _setupImageDisplay();
+    void _setupButtons();
 };
 
 #endif // MAINWINDOW_H
