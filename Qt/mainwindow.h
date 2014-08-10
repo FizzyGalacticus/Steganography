@@ -28,6 +28,7 @@ private slots:
     //Open File buttons
     void _openCoverImageButtonIsPressed();
     void _openPayloadButtonIsPressed();
+    void _hidePayloadButtonIsPressed();
 
 private:
     Ui::MainWindow *ui;
@@ -36,9 +37,10 @@ private:
     QWidget * _centralWidget;
     QVBoxLayout * _mainLayout;
 
-    //Open file buttons
+    //Buttons
     QPushButton * _openCoverImageButton;
     QPushButton * _openPayloadButton;
+    QPushButton * _hidePayloadButton;
 
     //Open File Dialogue
     QStringList _openFileDialogue(const QString &);

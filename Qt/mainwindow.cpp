@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _mainLayout(new QVBoxLayout),
     _openCoverImageButton(new QPushButton("Cover...")),
     _openPayloadButton(new QPushButton("Payload...")),
+    _hidePayloadButton(new QPushButton("Hide Payload!")),
     _supportedImageFormats("Images ("),
     _imageDisplay(new QLabel(this))
 {
@@ -61,6 +62,11 @@ void MainWindow::_openPayloadButtonIsPressed()
 
     if(_payloads->size()) qDebug() << "File(s) opened!";
     else qDebug() << "No file(s) selected!";
+}
+
+void MainWindow::_hidePayloadButtonIsPressed()
+{
+    //Work magic
 }
 
 QStringList MainWindow::_openFileDialogue(const QString & formats)
