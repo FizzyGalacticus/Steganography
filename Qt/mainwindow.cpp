@@ -1,9 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "setupFunctions.cpp"
 #include <QDebug>
 #include <QImageReader>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 #include <QWidget>
 #include <QResizeEvent>
 
@@ -82,32 +81,4 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
     }
 
     qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
-}
-
-void MainWindow::_setupButtons()
-{
-    connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
-
-    QHBoxLayout * buttons = new QHBoxLayout;
-
-    buttons->addWidget(_openCoverImageButton);
-
-    _mainLayout->addLayout(buttons);
-}
-
-void MainWindow::_setupImageDisplay()
-{
-    QHBoxLayout * images = new QHBoxLayout;
-
-    images->addWidget(_imageDisplay);
-
-    _mainLayout->addLayout(images);
-}
-
-void MainWindow::_setup()
-{
-    _setupImageDisplay();
-    _setupButtons();
-
-    _centralWidget->setLayout(_mainLayout);
 }
