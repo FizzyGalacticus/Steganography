@@ -130,15 +130,16 @@ const QVector<char> * MainWindow::getBytesFromFile(const QString & fileName)
     return fileBytes;
 }
 
-const QVector<bool> * MainWindow::getBitsFromFile(const QVector<char> * fileBytes)
+const QVector<bool> * MainWindow::getBitsFromBytes(const QVector<char> * fileBytes)
 {
     QVector<bool> * fileBits = new QVector<bool>;
 
     for(int byte = 0; byte < fileBytes->size(); byte++)
     {
-        for(int bit = 0; bit < 8; bit++)
+        for(int bit = 7; bit >= 0; bit--)
         {
-
+            if((fileBytes->at(byte) >> bit) & 1) fileBits->push_back(true);
+            else fileBits->push_back(false);
         }
     }
 

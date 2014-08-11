@@ -63,7 +63,7 @@ private:
 
     //Get bits from files
     const QVector<char> * getBytesFromFile(const QString &);
-    const QVector<bool> * getBitsFromFile(const QVector<char> *);
+    const QVector<bool> * getBitsFromBytes(const QVector<char> *);
 };
 
 #endif // MAINWINDOW_H
