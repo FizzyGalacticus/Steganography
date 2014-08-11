@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <QVBoxLayout>
+#include <QVector>
 
 namespace Ui {
 class MainWindow;
@@ -59,6 +60,10 @@ private:
     void _setup();
     void _setupImageDisplay();
     void _setupButtons();
+
+    //Get bits from files
+    const QVector<char> * getBytesFromFile(const QString &);
+    const QVector<bool> * getBitsFromFile(const QVector<char> *);
 };
 
 #endif // MAINWINDOW_H

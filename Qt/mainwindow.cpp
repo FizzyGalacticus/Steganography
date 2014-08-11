@@ -5,6 +5,8 @@
 #include <QImageReader>
 #include <QWidget>
 #include <QResizeEvent>
+#include <fstream>
+using std::ifstream;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -103,4 +105,34 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
     }
 
     qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
+}
+
+const QVector<char> * MainWindow::getBytesFromFile(const QString & fileName)
+{
+    QVector<char> * fileBytes = new QVector<char>;
+    ifstream in;
+
+    in.open(fileName.toStdString().c_str(), std::ios::in);
+    if(in)
+    {
+        char temp;
+
+        while(!in.eof())
+        {
+            in.read(&temp,sizeof(temp));
+            fileBytes->push_back(temp);
+        }
+
+        in.close();
+    }
+    else qDebug() << "Couldn't open " << fileName << " for reading!";
+
+    return fileBytes;
+}
+
+const QVector<bool> * MainWindow::getBitsFromFile(const QVector<char> * fileBytes)
+{
+    QVector<bool> * fileBits = new QVector<bool>;
+
+    return fileBits;
 }
