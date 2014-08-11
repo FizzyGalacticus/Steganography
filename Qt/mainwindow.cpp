@@ -6,7 +6,6 @@
 #include <QWidget>
 #include <QResizeEvent>
 #include <fstream>
-using std::ifstream;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -73,6 +72,8 @@ void MainWindow::_hidePayloadButtonIsPressed()
 {
     if(_payloads != NULL)
     {
+        const QVector<bool> * payloadBits = getBitsFromPayloads();
+
         //Work magic
     }
     else qDebug() << "No payloads!";
@@ -107,14 +108,31 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
     qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
 }
 
+const QVector<bool> * MainWindow::getBitsFromPayloads()
+{
+    qDebug() << "Getting bits from payloads...";
+
+    QVector<bool> * payloadBits = new QVector<bool>;
+
+    for(int i = 0; i < _payloads->size(); i++)
+    {
+        const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloads->at(i))));
+
+        for(int bit = 0; bit < temp->size(); bit++) payloadBits->push_back(temp->at(bit));
+    }
+
+    return payloadBits;
+}
+
 const QVector<char> * MainWindow::getBytesFromFile(const QString & fileName)
 {
     QVector<char> * fileBytes = new QVector<char>;
-    ifstream in;
+    std::ifstream in;
 
     in.open(fileName.toStdString().c_str(), std::ios::in);
     if(in)
     {
+        qDebug() << "Getting bytes from" << fileName << "...";
         char temp;
 
         while(!in.eof())
@@ -132,12 +150,17 @@ const QVector<char> * MainWindow::getBytesFromFile(const QString & fileName)
 
 const QVector<bool> * MainWindow::getBitsFromBytes(const QVector<char> * fileBytes)
 {
+    qDebug() << "Now getting bits...";
+
     QVector<bool> * fileBits = new QVector<bool>;
 
+    //Iterate through each byte
     for(int byte = 0; byte < fileBytes->size(); byte++)
     {
+        //For each bit in the byte
         for(int bit = 7; bit >= 0; bit--)
         {
+            //If the first bit is set, push 'true'
             if((fileBytes->at(byte) >> bit) & 1) fileBits->push_back(true);
             else fileBits->push_back(false);
         }

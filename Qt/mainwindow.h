@@ -62,6 +62,7 @@ private:
     void _setupButtons();
 
     //Get bits from files
+    const QVector<bool> * getBitsFromPayloads();
     const QVector<char> * getBytesFromFile(const QString &);
     const QVector<bool> * getBitsFromBytes(const QVector<char> *);
 };
