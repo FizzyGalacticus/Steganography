@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _payloads(NULL)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Steganography Tool");
     this->setMinimumSize(100,100);
     this->setCentralWidget(_centralWidget);
 
@@ -120,6 +121,8 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
 
         for(int bit = 0; bit < temp->size(); bit++) payloadBits->push_back(temp->at(bit));
     }
+
+    qDebug() << "done.";
 
     return payloadBits;
 }
