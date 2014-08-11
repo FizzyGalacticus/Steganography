@@ -134,5 +134,13 @@ const QVector<bool> * MainWindow::getBitsFromFile(const QVector<char> * fileByte
 {
     QVector<bool> * fileBits = new QVector<bool>;
 
+    for(int byte = 0; byte < fileBytes->size(); byte++)
+    {
+        for(int bit = 0; bit < 8; bit++)
+        {
+
+        }
+    }
+
     return fileBits;
 }
