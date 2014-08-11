@@ -15,7 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
     _openPayloadButton(new QPushButton("Payload...")),
     _hidePayloadButton(new QPushButton("Hide Payload!")),
     _supportedImageFormats("Images ("),
-    _imageDisplay(new QLabel(this))
+    _coverImage(NULL),
+    _scaledImage(NULL),
+    _imageDisplay(new QLabel(this)),
+    _payloads(NULL)
 {
     ui->setupUi(this);
     this->setMinimumSize(100,100);
@@ -66,7 +69,11 @@ void MainWindow::_openPayloadButtonIsPressed()
 
 void MainWindow::_hidePayloadButtonIsPressed()
 {
-    //Work magic
+    if(_payloads != NULL)
+    {
+        //Work magic
+    }
+    else qDebug() << "No payloads!";
 }
 
 QStringList MainWindow::_openFileDialogue(const QString & formats)
