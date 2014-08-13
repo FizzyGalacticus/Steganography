@@ -65,6 +65,10 @@ private:
     const QVector<bool> * getBitsFromPayloads();
     const QVector<char> * getBytesFromFile(const QString &);
     const QVector<bool> * getBitsFromBytes(const QVector<char> *);
+
+    //Send bits to files
+    const QVector<char> * getBytesFromBits(const QVector<bool> *);
+    bool writeBytesToFile(const QVector<char> *, const QString &);
 };
 
 #endif // MAINWINDOW_H

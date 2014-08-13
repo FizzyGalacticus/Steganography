@@ -196,3 +196,20 @@ const QVector<bool> * MainWindow::getBitsFromBytes(const QVector<char> * fileByt
 
     return fileBits;
 }
+
+const QVector<char> * MainWindow::getBytesFromBits(const QVector<bool> * bits)
+{
+    QVector<char> * bytes = new QVector<char>;
+
+    for(int i = 0; i < bits->size(); i++)
+    {
+
+    }
+
+    return bytes;
+}
+
+bool MainWindow::writeBytesToFile(const QVector<char> * bytes, const QString & fileName)
+{
+    return false;
+}
