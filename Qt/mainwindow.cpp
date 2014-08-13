@@ -81,13 +81,17 @@ void MainWindow::_hidePayloadButtonIsPressed()
 
         const QVector<bool> * payloadBits = getBitsFromPayloads();
         const unsigned int availableSpace = (_coverImage->width()*_coverImage->height()*3);
+        const unsigned int numberOfFiles = _payloads->size(), numberOfBits = payloadBits->size();
 
-        qDebug() << "Needed space: " << payloadBits->size();
-        qDebug() << "Space available: " << availableSpace;
+/*****************DEBUG INFORMATION*******************************/
+        for(int i = 0; i < payloadBits->size(); i++)
+            qDebug() << (payloadBits->at(i)?'1':'0');
+        qDebug() << payloadBits->size();
+/*****************************************************************/
 
-        if(availableSpace > payloadBits->size())
+        if(availableSpace > numberOfFiles)
         {
-            qDebug() << payloadBits->size();
+            qDebug() << numberOfBits;
             qDebug() << availableSpace;
             //Work magic
         }
