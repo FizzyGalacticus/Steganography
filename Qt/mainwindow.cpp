@@ -80,18 +80,22 @@ void MainWindow::_hidePayloadButtonIsPressed()
         }
 
         const QVector<bool> * payloadBits = getBitsFromPayloads();
+        const unsigned int availableSpace = (_coverImage->width()*_coverImage->height()*3);
 
-        if((_coverImage->width()*_coverImage->height()*3) > payloadBits->size())
+        qDebug() << "Needed space: " << payloadBits->size();
+        qDebug() << "Space available: " << availableSpace;
+
+        if(availableSpace > payloadBits->size())
         {
             qDebug() << payloadBits->size();
-            qDebug() << (_coverImage->width()*_coverImage->height()*3);
+            qDebug() << availableSpace;
             //Work magic
         }
         else
         {
             qDebug() << "Cover image is not large enough to host given payload.";
             qDebug() << "Size needed:" << payloadBits->size() << "bits.";
-            qDebug() << "Space available:" << (_coverImage->width()*_coverImage->height()*3) << "bits.";
+            qDebug() << "Space available:" << availableSpace << "bits.";
         }
     }
     else qDebug() << "No payloads!";
