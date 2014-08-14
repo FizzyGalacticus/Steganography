@@ -211,5 +211,19 @@ const QVector<char> * MainWindow::getBytesFromBits(const QVector<bool> * bits)
 
 bool MainWindow::writeBytesToFile(const QVector<char> * bytes, const QString & fileName)
 {
+    std::ofstream out;
+
+    out.open(fileName.toStdString().c_str(), std::ios::out);
+
+    if(out)
+    {
+        for(int i = 0; i < bytes->size(); i++)
+            out.write(&bytes->at(i), sizeof(bytes->at(i)));
+
+        out.close();
+        return true;
+    }
+    else qDebug() << "Couldn't open " << fileName << " for writing!";
+
     return false;
 }
