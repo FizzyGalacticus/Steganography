@@ -64,7 +64,7 @@ private:
     //General bit manipulation
     const QVector<bool> * getBitsFromNumber(const unsigned int &);
     unsigned int getNumberFromBits(const QVector<bool> *);
-    void mergeBits(QVector<bool> *, const QVector<bool> *);
+    QVector<bool> * mergeBits(const QVector<bool> *, const QVector<bool> *);
 
     //Get bits from files
     const QVector<bool> * getBitsFromPayloads();

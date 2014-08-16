@@ -15,7 +15,7 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
         temp = (number >> (8*(i-1)));
         const QVector<bool> * tempBits = getBitsFromBytes(new QByteArray(&temp,sizeof(temp)));
 
-        mergeBits(numberBits,tempBits);
+        numberBits = mergeBits(numberBits,tempBits);
     }
 
     return numberBits;
@@ -41,10 +41,17 @@ unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 }
 
 
-void MainWindow::mergeBits(QVector<bool> * lhs, const QVector<bool> * rhs)
+QVector<bool> * MainWindow::mergeBits(const QVector<bool> * lhs, const QVector<bool> * rhs)
 {
+    QVector<bool> * newBits = new QVector<bool>;
+
+    for(int i = 0; i < lhs->size(); i++)
+        newBits->push_back(lhs->at(i));
+
     for(int i = 0; i < rhs->size(); i++)
-        lhs->push_back(rhs->at(i));
+        newBits->push_back(rhs->at(i));
+
+    return newBits;
 }
 
 const QVector<bool> * MainWindow::getBitsFromPayloads()
@@ -57,7 +64,7 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
     {
         const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloads->at(i))));
 
-        mergeBits(payloadBits,temp);
+        payloadBits = mergeBits(payloadBits,temp);
     }
 
     qDebug() << "done.";
