@@ -61,6 +61,9 @@ private:
     void _setupImageDisplay();
     void _setupButtons();
 
+    //General bit manipulation
+    const QVector<bool> * getBitsFromNumber(const unsigned int &);
+
     //Get bits from files
     const QVector<bool> * getBitsFromPayloads();
     const QByteArray * getBytesFromFile(const QString &);

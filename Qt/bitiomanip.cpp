@@ -4,6 +4,21 @@
 #include <QDebug>
 #include <QRgb>
 
+const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
+{
+    QVector<bool> * numberBits = new QVector<bool>;
+
+    for(int i = 0; i < sizeof(number); i++)
+    {
+        char temp = 0;
+
+        temp = (number << (8*i));
+        const QVector<bool> * tempBits = getBitsFromBytes(new QByteArray(&temp,sizeof(temp)));
+
+        for(int bit = 0; bit < tempBits->size(); bit++) numberBits->push_back(tempBits->at(bit));
+    }
+}
+
 const QVector<bool> * MainWindow::getBitsFromPayloads()
 {
     qDebug() << "Getting bits from payloads...";
@@ -122,9 +137,7 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
                 {
                     case 0:
                         value = QColor(stegImage->pixel(xPix,yPix)).red();
-                        qDebug() << "Original value:" << value;
                         value = putBitIntoNumber(value,bit);
-                        qDebug() << "New value:" << value;
                         newColor += (value << 16);
                         newColor += (QColor(stegImage->pixel(xPix,yPix)).green() << 8);
                         newColor += (QColor(stegImage->pixel(xPix,yPix)).blue());
@@ -154,7 +167,8 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
         if(bit >= payloadBits->size()) break;
     }
 
-    stegImage->save("steg","png",-1);
+    stegImage->save("steg.png","png",-1);
+    delete stegImage;
 }
 
 
