@@ -23,7 +23,7 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
 
 unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 {
-    if(bits->size())
+    if(bits->size() == sizeof(unsigned int)*8)
     {
         qDebug() << "Getting number back!";
         unsigned int number = 0;
