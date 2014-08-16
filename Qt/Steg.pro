@@ -14,7 +14,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    setupFunctions.cpp
+    setupFunctions.cpp \
+    bitiomanip.cpp
 
 HEADERS  += mainwindow.h
 
