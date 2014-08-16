@@ -17,12 +17,15 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
 
         for(int bit = 0; bit < tempBits->size(); bit++) numberBits->push_back(tempBits->at(bit));
     }
+
+    return numberBits;
 }
 
 unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 {
-    if(bits->size() == sizeof(unsigned int))
+    if(bits->size())
     {
+        qDebug() << "Getting number back!";
         unsigned int number = 0;
 
         for(int i = 0; i < bits->size(); i++)
