@@ -5,9 +5,6 @@
 #include <QImageReader>
 #include <QWidget>
 #include <QResizeEvent>
-#include <fstream>
-#include <QFile>
-#include <QByteArray>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -93,15 +90,13 @@ void MainWindow::_hidePayloadButtonIsPressed()
             if(payload->exists()) numberOfBitsNeeded += (payload->size() * 8);
         }
 
-        const unsigned int numberOfFiles = _payloads->size();
-
         if(availableSpace > numberOfBitsNeeded)
         {
             payloadBits = getBitsFromPayloads();
 
             qDebug() << payloadBits->size();
             qDebug() << availableSpace;
-            //Work magic
+            putBitsIntoImage(payloadBits);
 
             /*****************DEBUG INFORMATION*******************************/
             //        for(int i = 0; i < payloadBits->size(); i++)

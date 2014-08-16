@@ -2,6 +2,7 @@
 #define __STEG__BITIOMANIP
 #include "mainwindow.h"
 #include <QDebug>
+#include <QRgb>
 
 const QVector<bool> * MainWindow::getBitsFromPayloads()
 {
@@ -30,6 +31,8 @@ const QByteArray * MainWindow::getBytesFromFile(const QString & fileName)
 
     if(file->isOpen())
     {
+        qDebug() << "Getting bytes from:" << fileName;
+
         fileBytes = new QByteArray(file->readAll());
         file->close();
     }
@@ -54,6 +57,8 @@ const QVector<bool> * MainWindow::getBitsFromBytes(const QByteArray * fileBytes)
             else fileBits->push_back(false);
         }
     }
+
+    qDebug() << "Received" << fileBits->size() << "bits!";
 
     return fileBits;
 }
@@ -95,6 +100,69 @@ bool MainWindow::writeBytesToFile(const QByteArray * bytes, const QString & file
     }
 
     return false;
+}
+
+void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
+{
+    QImage * stegImage = new QImage(*_coverImage);
+
+    //Counter for keeping track of which bit we're on
+    int bit = 0;
+
+    for(int xPix = 0; xPix < stegImage->width(); xPix++)
+    {
+        for(int yPix = 0; yPix < stegImage->height(); yPix++)
+        {
+            for(int color = 0; color < 3 && bit < payloadBits->size(); color++)
+            {
+                int value = 0;
+                unsigned int newColor = 0;
+
+                switch(color)
+                {
+                    case 0:
+                        value = QColor(stegImage->pixel(xPix,yPix)).red();
+                        qDebug() << "Original value:" << value;
+                        value = putBitIntoNumber(value,bit);
+                        qDebug() << "New value:" << value;
+                        newColor += (value << 16);
+                        newColor += (QColor(stegImage->pixel(xPix,yPix)).green() << 8);
+                        newColor += (QColor(stegImage->pixel(xPix,yPix)).blue());
+                    break;
+                    case 1:
+                        value = QColor(stegImage->pixel(xPix,yPix)).green();
+                        value = putBitIntoNumber(value,bit);
+                        newColor += (QColor(stegImage->pixel(xPix,yPix)).red() << 16);
+                        newColor += (value << 8);
+                        newColor += (QColor(stegImage->pixel(xPix,yPix)).blue());
+                    break;
+                    case 2:
+                        value = QColor(stegImage->pixel(xPix,yPix)).blue();
+                        value = putBitIntoNumber(value,bit);
+                        newColor += (QColor(stegImage->pixel(xPix,yPix)).red() << 16);
+                        newColor += (QColor(stegImage->pixel(xPix,yPix)).green() << 8);
+                        newColor += (value);
+                    break;
+                }
+
+                bit++;
+            }
+
+            if(bit >= payloadBits->size()) break;
+        }
+
+        if(bit >= payloadBits->size()) break;
+    }
+
+    stegImage->save("steg","png",-1);
+}
+
+
+int MainWindow::putBitIntoNumber(const int & value,const bool & bit)
+{
+    if(bit && value % 2 == 0) return value + 1;
+    else if(!bit && value % 2 == 1) return value - 1;
+    else return value;
 }
 
 #endif

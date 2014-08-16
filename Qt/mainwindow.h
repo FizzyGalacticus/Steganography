@@ -69,6 +69,10 @@ private:
     //Send bits to files
     const QByteArray * getBytesFromBits(const QVector<bool> *);
     bool writeBytesToFile(const QByteArray *, const QString &);
+
+    //Put bits into image
+    void putBitsIntoImage(const QVector<bool> *);
+    int putBitIntoNumber(const int &,const bool &);
 };
 
 #endif // MAINWINDOW_H
