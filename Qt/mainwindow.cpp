@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <QResizeEvent>
 #include <fstream>
+#include <QFile>
+#include <QByteArray>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -79,29 +81,41 @@ void MainWindow::_hidePayloadButtonIsPressed()
             return;
         }
 
-        const QVector<bool> * payloadBits = getBitsFromPayloads();
+        const QVector<bool> * payloadBits = NULL;
+
         const unsigned int availableSpace = (_coverImage->width()*_coverImage->height()*3);
-        const unsigned int numberOfFiles = _payloads->size(), numberOfBits = payloadBits->size();
 
-/*****************DEBUG INFORMATION*******************************/
-//        for(int i = 0; i < payloadBits->size(); i++)
-//            qDebug() << (payloadBits->at(i)?'1':'0');
-//        qDebug() << payloadBits->size();
-
-        if(writeBytesToFile(getBytesFromBits(payloadBits), "test"))
-            qDebug() << "Written payload!";
-/*****************************************************************/
-
-        if(availableSpace > numberOfFiles)
+        unsigned int numberOfBitsNeeded = 0;
+        for(int i = 0; i < _payloads->size(); i++)
         {
-            qDebug() << numberOfBits;
+            QFile * payload = new QFile(_payloads->at(i));
+
+            if(payload->exists()) numberOfBitsNeeded += (payload->size() * 8);
+        }
+
+        const unsigned int numberOfFiles = _payloads->size();
+
+        if(availableSpace > numberOfBitsNeeded)
+        {
+            payloadBits = getBitsFromPayloads();
+
+            qDebug() << payloadBits->size();
             qDebug() << availableSpace;
             //Work magic
+
+            /*****************DEBUG INFORMATION*******************************/
+            //        for(int i = 0; i < payloadBits->size(); i++)
+            //            qDebug() << (payloadBits->at(i)?'1':'0');
+            //        qDebug() << payloadBits->size();
+
+                    if(writeBytesToFile(getBytesFromBits(payloadBits), "test"))
+                        qDebug() << "Written payload!";
+            /*****************************************************************/
         }
         else
         {
             qDebug() << "Cover image is not large enough to host given payload.";
-            qDebug() << "Size needed:" << numberOfBits << "bits.";
+            qDebug() << "Size needed:" << numberOfBitsNeeded << "bits.";
             qDebug() << "Space available:" << availableSpace << "bits.";
         }
     }
@@ -150,56 +164,28 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
         for(int bit = 0; bit < temp->size(); bit++) payloadBits->push_back(temp->at(bit));
     }
 
-    /*************DEBUG***********************/
-    if(_payloads->size() >= 2)
-    {
-        const QVector<bool> * testBits = getBitsFromBytes(getBytesFromFile(_payloads->at(1)));
-        const QVector<char> * testBytes = getBytesFromBits(testBits);
-        const QVector<bool> * testBits2 = getBitsFromBytes(testBytes);
-
-        bool eq = false;
-
-        for(int i = 0; i < testBits->size() && i < testBits2->size(); i++)
-        {
-            if(testBits->size() != testBits2->size()) break;
-            else if(testBits->at(i) == testBits2->at(i)) eq = true;
-            else eq = false;
-        }
-
-        if(eq) qDebug() << "They're equal in bits!";
-    }
-    /*****************************************/
-
     qDebug() << "done.";
 
     return payloadBits;
 }
 
-const QVector<char> * MainWindow::getBytesFromFile(const QString & fileName)
+const QByteArray * MainWindow::getBytesFromFile(const QString & fileName)
 {
-    QVector<char> * fileBytes = new QVector<char>;
-    std::ifstream in;
+    QByteArray * fileBytes = NULL;
+    QFile * file = new QFile(fileName);
 
-    in.open(fileName.toStdString().c_str(), std::ios::in);
-    if(in)
+    file->open(QIODevice::ReadOnly);
+
+    if(file->isOpen())
     {
-        qDebug() << "Getting bytes from" << fileName << "...";
-        char temp;
-
-        while(!in.eof())
-        {
-            in.read(&temp,sizeof(temp));
-            fileBytes->push_back(temp);
-        }
-
-        in.close();
+        fileBytes = new QByteArray(file->readAll());
+        file->close();
     }
-    else qDebug() << "Couldn't open " << fileName << " for reading!";
 
     return fileBytes;
 }
 
-const QVector<bool> * MainWindow::getBitsFromBytes(const QVector<char> * fileBytes)
+const QVector<bool> * MainWindow::getBitsFromBytes(const QByteArray * fileBytes)
 {
     qDebug() << "Now getting bits...";
 
@@ -220,9 +206,9 @@ const QVector<bool> * MainWindow::getBitsFromBytes(const QVector<char> * fileByt
     return fileBits;
 }
 
-const QVector<char> * MainWindow::getBytesFromBits(const QVector<bool> * bits)
+const QByteArray * MainWindow::getBytesFromBits(const QVector<bool> * bits)
 {
-    QVector<char> * bytes = new QVector<char>;
+    QByteArray * bytes = new QByteArray;
 
     if(bits->size() % 8 == 0)
         for(int i = 0; i < bits->size(); i+=8)
@@ -242,21 +228,19 @@ const QVector<char> * MainWindow::getBytesFromBits(const QVector<bool> * bits)
     return bytes;
 }
 
-bool MainWindow::writeBytesToFile(const QVector<char> * bytes, const QString & fileName)
+bool MainWindow::writeBytesToFile(const QByteArray * bytes, const QString & fileName)
 {
-    std::ofstream out;
+    QFile * file = new QFile(fileName);
 
-    out.open(fileName.toStdString().c_str(), std::ios::out);
+    file->open(QIODevice::WriteOnly);
 
-    if(out)
+    if(file->isOpen())
     {
-        for(int i = 0; i < bytes->size(); i++)
-            out.write(&bytes->at(i), sizeof(bytes->at(i)));
+        file->write(*bytes);
+        file->close();
 
-        out.close();
         return true;
     }
-    else qDebug() << "Couldn't open " << fileName << " for writing!";
 
     return false;
 }

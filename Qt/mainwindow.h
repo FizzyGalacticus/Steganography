@@ -63,12 +63,12 @@ private:
 
     //Get bits from files
     const QVector<bool> * getBitsFromPayloads();
-    const QVector<char> * getBytesFromFile(const QString &);
-    const QVector<bool> * getBitsFromBytes(const QVector<char> *);
+    const QByteArray * getBytesFromFile(const QString &);
+    const QVector<bool> * getBitsFromBytes(const QByteArray *);
 
     //Send bits to files
-    const QVector<char> * getBytesFromBits(const QVector<bool> *);
-    bool writeBytesToFile(const QVector<char> *, const QString &);
+    const QByteArray * getBytesFromBits(const QVector<bool> *);
+    bool writeBytesToFile(const QByteArray *, const QString &);
 };
 
 #endif // MAINWINDOW_H
