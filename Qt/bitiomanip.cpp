@@ -4,7 +4,7 @@
 #include <QDebug>
 #include <QRgb>
 
-const QVector<bool> * MainWindow::getBitsFromNumber(const int &number)
+const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
 {
     QVector<bool> * numberBits = new QVector<bool>;
 
@@ -21,9 +21,9 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const int &number)
     return numberBits;
 }
 
-int MainWindow::getNumberFromBits(const QVector<bool> * bits)
+unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 {
-    if(bits->size() == sizeof(int)*8)
+    if(bits->size() == sizeof(unsigned int)*8)
     {
         qDebug() << "Getting number back!";
         unsigned int number = 0;

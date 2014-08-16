@@ -34,13 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     _setup();
-
-    unsigned int test = 4211920914;
-    const QVector<bool> * testBits = getBitsFromNumber(test);
-    qDebug() << "Test number's # of bits:" << testBits->size();
-    qDebug() << "Should be:" << sizeof(test)*8;
-    const unsigned int retest = getNumberFromBits(testBits);
-    qDebug() << "New number:" << retest;
 }
 
 MainWindow::~MainWindow()
