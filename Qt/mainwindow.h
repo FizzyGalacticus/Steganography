@@ -62,8 +62,8 @@ private:
     void _setupButtons();
 
     //General bit manipulation
-    const QVector<bool> * getBitsFromNumber(const unsigned int &);
-    unsigned int getNumberFromBits(const QVector<bool> *);
+    const QVector<bool> * getBitsFromNumber(const int &);
+    int getNumberFromBits(const QVector<bool> *);
 
     //Get bits from files
     const QVector<bool> * getBitsFromPayloads();

@@ -4,15 +4,15 @@
 #include <QDebug>
 #include <QRgb>
 
-const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
+const QVector<bool> * MainWindow::getBitsFromNumber(const int &number)
 {
     QVector<bool> * numberBits = new QVector<bool>;
 
-    for(int i = 0; i < sizeof(number); i++)
+    for(int i = sizeof(number); i > 0; i--)
     {
         char temp = 0;
 
-        temp = (number << (8*i));
+        temp = (number >> (8*(i-1)));
         const QVector<bool> * tempBits = getBitsFromBytes(new QByteArray(&temp,sizeof(temp)));
 
         for(int bit = 0; bit < tempBits->size(); bit++) numberBits->push_back(tempBits->at(bit));
@@ -21,9 +21,9 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
     return numberBits;
 }
 
-unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
+int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 {
-    if(bits->size() == sizeof(unsigned int)*8)
+    if(bits->size() == sizeof(int)*8)
     {
         qDebug() << "Getting number back!";
         unsigned int number = 0;
