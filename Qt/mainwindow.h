@@ -64,6 +64,7 @@ private:
     //General bit manipulation
     const QVector<bool> * getBitsFromNumber(const unsigned int &);
     unsigned int getNumberFromBits(const QVector<bool> *);
+    void mergeBits(QVector<bool> *, const QVector<bool> *);
 
     //Get bits from files
     const QVector<bool> * getBitsFromPayloads();
@@ -77,6 +78,7 @@ private:
     //Put bits into image
     void putBitsIntoImage(const QVector<bool> *);
     int putBitIntoNumber(const int &,const bool &);
+
 };
 
 #endif // MAINWINDOW_H
