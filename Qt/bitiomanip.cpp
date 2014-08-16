@@ -19,6 +19,24 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
     }
 }
 
+unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
+{
+    if(bits->size() == sizeof(unsigned int))
+    {
+        unsigned int number = 0;
+
+        for(int i = 0; i < bits->size(); i++)
+        {
+            if(bits->at(i)) number++;
+
+            if(i != (bits->size() - 1)) number = number << 1;
+        }
+
+        return number;
+    }
+    else return 0;
+}
+
 const QVector<bool> * MainWindow::getBitsFromPayloads()
 {
     qDebug() << "Getting bits from payloads...";

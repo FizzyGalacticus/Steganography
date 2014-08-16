@@ -63,6 +63,7 @@ private:
 
     //General bit manipulation
     const QVector<bool> * getBitsFromNumber(const unsigned int &);
+    unsigned int getNumberFromBits(const QVector<bool> *);
 
     //Get bits from files
     const QVector<bool> * getBitsFromPayloads();
