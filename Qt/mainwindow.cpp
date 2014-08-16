@@ -82,7 +82,8 @@ void MainWindow::_hidePayloadButtonIsPressed()
 
         const unsigned int availableSpace = (_coverImage->width()*_coverImage->height()*3);
 
-        unsigned int numberOfBitsNeeded = 0;
+        unsigned int numberOfBitsNeeded = sizeof(unsigned int) + (_payloads->size() * sizeof(unsigned int));
+
         for(int i = 0; i < _payloads->size(); i++)
         {
             QFile * payload = new QFile(_payloads->at(i));

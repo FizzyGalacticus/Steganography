@@ -59,12 +59,22 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
     qDebug() << "Getting bits from payloads...";
 
     QVector<bool> * payloadBits = new QVector<bool>;
+    QFile * payloadFile = NULL;
+    unsigned int fileSize = 0;
+
+    payloadBits = mergeBits(payloadBits,getBitsFromNumber(_payloads->size()));
 
     for(int i = 0; i < _payloads->size(); i++)
     {
+        payloadFile = new QFile(_payloads->at(i));
+        if(payloadFile->exists()) fileSize = payloadFile->size();
+
         const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloads->at(i))));
 
+        if(fileSize) payloadBits = mergeBits(payloadBits,getBitsFromNumber(fileSize));
         payloadBits = mergeBits(payloadBits,temp);
+
+        fileSize = 0;
     }
 
     qDebug() << "done.";
