@@ -84,9 +84,12 @@ void MainWindow::_hidePayloadButtonIsPressed()
         const unsigned int numberOfFiles = _payloads->size(), numberOfBits = payloadBits->size();
 
 /*****************DEBUG INFORMATION*******************************/
-        for(int i = 0; i < payloadBits->size(); i++)
-            qDebug() << (payloadBits->at(i)?'1':'0');
-        qDebug() << payloadBits->size();
+//        for(int i = 0; i < payloadBits->size(); i++)
+//            qDebug() << (payloadBits->at(i)?'1':'0');
+//        qDebug() << payloadBits->size();
+
+        if(writeBytesToFile(getBytesFromBits(payloadBits), "test"))
+            qDebug() << "Written payload!";
 /*****************************************************************/
 
         if(availableSpace > numberOfFiles)
@@ -147,6 +150,26 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
         for(int bit = 0; bit < temp->size(); bit++) payloadBits->push_back(temp->at(bit));
     }
 
+    /*************DEBUG***********************/
+    if(_payloads->size() >= 2)
+    {
+        const QVector<bool> * testBits = getBitsFromBytes(getBytesFromFile(_payloads->at(1)));
+        const QVector<char> * testBytes = getBytesFromBits(testBits);
+        const QVector<bool> * testBits2 = getBitsFromBytes(testBytes);
+
+        bool eq = false;
+
+        for(int i = 0; i < testBits->size() && i < testBits2->size(); i++)
+        {
+            if(testBits->size() != testBits2->size()) break;
+            else if(testBits->at(i) == testBits2->at(i)) eq = true;
+            else eq = false;
+        }
+
+        if(eq) qDebug() << "They're equal in bits!";
+    }
+    /*****************************************/
+
     qDebug() << "done.";
 
     return payloadBits;
@@ -201,10 +224,20 @@ const QVector<char> * MainWindow::getBytesFromBits(const QVector<bool> * bits)
 {
     QVector<char> * bytes = new QVector<char>;
 
-    for(int i = 0; i < bits->size(); i++)
-    {
+    if(bits->size() % 8 == 0)
+        for(int i = 0; i < bits->size(); i+=8)
+        {
+            char temp = 0;
 
-    }
+            for(int j = 0; j < 8; j++)
+            {
+                if(bits->at(i+j)) temp += 1;
+
+                if(j != 7) temp = temp << 1;
+            }
+
+            bytes->push_back(temp);
+        }
 
     return bytes;
 }
