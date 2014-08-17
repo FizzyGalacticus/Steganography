@@ -216,6 +216,7 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
     }
 
     stegImage->save("steg.png","png",0);
+    _progressBar->setValue(0);
     delete stegImage;
 }
 

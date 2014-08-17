@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include <QVector>
 #include <QProgressBar>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -38,6 +39,9 @@ private:
     //Central Widget & Layout
     QWidget * _centralWidget;
     QVBoxLayout * _mainLayout;
+
+    //Message Box
+    QMessageBox * _popUpMessage;
 
     //Buttons
     QPushButton * _openCoverImageButton;

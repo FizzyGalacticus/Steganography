@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     _centralWidget(new QWidget(this)),
     _mainLayout(new QVBoxLayout),
+    _popUpMessage(new QMessageBox(this)),
     _openCoverImageButton(new QPushButton("Cover...")),
     _openPayloadButton(new QPushButton("Payload...")),
     _hidePayloadButton(new QPushButton("Hide Payload!")),
@@ -108,12 +109,21 @@ void MainWindow::_hidePayloadButtonIsPressed()
                     if(writeBytesToFile(getBytesFromBits(payloadBits), "test"))
                         qDebug() << "Written payload!";
             /*****************************************************************/
+
+            _popUpMessage->setWindowTitle("Yipee!");
+            _popUpMessage->setText("Finished hiding payload!");
+            _popUpMessage->exec();
         }
         else
         {
-            qDebug() << "Cover image is not large enough to host given payload.";
-            qDebug() << "Size needed:" << numberOfBitsNeeded << "bits.";
-            qDebug() << "Space available:" << availableSpace << "bits.";
+            QString message = "Cover image is not large enough to host given payload.";
+            message += "\nSize needed: " + QString::number(numberOfBitsNeeded) + " bits.";
+            message += "\nSpace available: " + QString::number(availableSpace) + " bits.";
+
+            qDebug() << message;
+            _popUpMessage->setWindowTitle("Doh!");
+            _popUpMessage->setText(message);
+            _popUpMessage->exec();
         }
     }
     else qDebug() << "No payloads!";
