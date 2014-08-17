@@ -102,8 +102,6 @@ const QByteArray * MainWindow::getBytesFromFile(const QString & fileName)
 
 const QVector<bool> * MainWindow::getBitsFromBytes(const QByteArray * fileBytes)
 {
-    qDebug() << "Now getting bits...";
-
     QVector<bool> * fileBits = new QVector<bool>;
 
     //Iterate through each byte
@@ -117,8 +115,6 @@ const QVector<bool> * MainWindow::getBitsFromBytes(const QByteArray * fileBytes)
             else fileBits->push_back(false);
         }
     }
-
-    qDebug() << "Received" << fileBits->size() << "bits!";
 
     return fileBits;
 }

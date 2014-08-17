@@ -97,18 +97,7 @@ void MainWindow::_hidePayloadButtonIsPressed()
         {
             payloadBits = getBitsFromPayloads();
 
-            qDebug() << payloadBits->size();
-            qDebug() << availableSpace;
             putBitsIntoImage(payloadBits);
-
-            /*****************DEBUG INFORMATION*******************************/
-            //        for(int i = 0; i < payloadBits->size(); i++)
-            //            qDebug() << (payloadBits->at(i)?'1':'0');
-            //        qDebug() << payloadBits->size();
-
-                    if(writeBytesToFile(getBytesFromBits(payloadBits), "test"))
-                        qDebug() << "Written payload!";
-            /*****************************************************************/
 
             _popUpMessage->setWindowTitle("Yipee!");
             _popUpMessage->setText("Finished hiding payload!");
