@@ -3,6 +3,16 @@
 #include "mainwindow.h"
 #include <QHBoxLayout>
 
+
+void MainWindow::_setupProgressBar()
+{
+    QHBoxLayout * progressBarLayout = new QHBoxLayout;
+
+    progressBarLayout->addWidget(_progressBar);
+
+    _mainLayout->addLayout(progressBarLayout);
+}
+
 void MainWindow::_setupButtons()
 {
     connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
@@ -30,6 +40,7 @@ void MainWindow::_setupImageDisplay()
 void MainWindow::_setup()
 {
     _setupImageDisplay();
+    _setupProgressBar();
     _setupButtons();
 
     _centralWidget->setLayout(_mainLayout);

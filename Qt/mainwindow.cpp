@@ -18,7 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _coverImage(NULL),
     _scaledImage(NULL),
     _imageDisplay(new QLabel(this)),
-    _payloads(NULL)
+    _payloads(NULL),
+    _progressBar(new QProgressBar)
 {
     ui->setupUi(this);
     this->setWindowTitle("Steganography Tool");

@@ -10,6 +10,7 @@
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QVector>
+#include <QProgressBar>
 
 namespace Ui {
 class MainWindow;
@@ -56,10 +57,14 @@ private:
     //Payload File Name Variable
     QStringList * _payloads;
 
+    //Progress Bar
+    QProgressBar * _progressBar;
+
     //Setup functions
     void _setup();
     void _setupImageDisplay();
     void _setupButtons();
+    void _setupProgressBar();
 
     //General bit manipulation
     const QVector<bool> * getBitsFromNumber(const unsigned int &);
