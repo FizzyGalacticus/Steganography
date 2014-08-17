@@ -166,6 +166,9 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
 {
     QImage * stegImage = new QImage(*_coverImage);
 
+    _progressBar->setRange(0, payloadBits->size());
+    _progressBar->setValue(0);
+
     //Counter for keeping track of which bit we're on
     int bit = 0;
 
@@ -203,7 +206,7 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
                     break;
                 }
 
-                bit++;
+                _progressBar->setValue(++bit);
             }
 
             if(bit >= payloadBits->size()) break;
