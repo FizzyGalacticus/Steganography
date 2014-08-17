@@ -215,7 +215,7 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
         if(bit >= payloadBits->size()) break;
     }
 
-    stegImage->save("steg.png","png",-1);
+    stegImage->save("steg.png","png",0);
     delete stegImage;
 }
 

@@ -8,6 +8,8 @@ void MainWindow::_setupProgressBar()
 {
     QHBoxLayout * progressBarLayout = new QHBoxLayout;
 
+    _progressBar->setTextVisible(false);
+
     progressBarLayout->addWidget(_progressBar);
 
     _mainLayout->addLayout(progressBarLayout);
