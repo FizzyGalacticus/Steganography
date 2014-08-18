@@ -12,15 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     _centralWidget(new QWidget(this)),
     _mainLayout(new QVBoxLayout),
     _popUpMessage(new QMessageBox(this)),
-    _coverLabel(new QLabel("Cover Image",this)),
-    _stegLabel(new QLabel("Steg Image",this)),
+    _coverLabel(new QLabel(tr("Cover Image"),this)),
+    _stegLabel(new QLabel(tr("Steg Image"),this)),
     _coverImageDisplay(new QLabel(this)),
     _stegImageDisplay(new QLabel(this)),
-    _openCoverImageButton(new QPushButton("Cover Image...")),
-    _openPayloadButton(new QPushButton("Payload...")),
-    _hidePayloadButton(new QPushButton("Hide Payload!")),
-    _openStegImageButton(new QPushButton("Steg Image...")),
-    _recoverFilesButton(new QPushButton("Recover Files!")),
+    _openCoverImageButton(new QPushButton(tr("Cover Image..."))),
+    _openPayloadButton(new QPushButton(tr("Payload..."))),
+    _hidePayloadButton(new QPushButton(tr("Hide Payload!"))),
+    _openStegImageButton(new QPushButton(tr("Steg Image..."))),
+    _recoverFilesButton(new QPushButton(tr("Recover Files!"))),
     _supportedImageFormats("Images ("),
     _coverImage(NULL),
     _stegImage(NULL),
@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _progressBar(new QProgressBar)
 {
     ui->setupUi(this);
-    this->setWindowTitle("Steganography Tool");
+    this->setWindowTitle(tr("Steganography Tool"));
     this->setMinimumSize(100,100);
     this->setCentralWidget(_centralWidget);
 
@@ -72,7 +72,7 @@ void MainWindow::_hidePayloadButtonIsPressed()
     {
         if(!_coverImage)
         {
-            qDebug() << "No cover image!";
+            qDebug() << tr("No cover image!");
             return;
         }
 
@@ -98,8 +98,8 @@ void MainWindow::_hidePayloadButtonIsPressed()
             _stegImage = new QImage("steg.png");
             _stegImageDisplay->setPixmap(QPixmap::fromImage(_stegImage->scaled(_stegImageDisplay->width(),_stegImageDisplay->height())));
 
-            _popUpMessage->setWindowTitle("Yipee!");
-            _popUpMessage->setText("Finished hiding payload!");
+            _popUpMessage->setWindowTitle(tr("Yipee!"));
+            _popUpMessage->setText(tr("Finished hiding payload!"));
             _popUpMessage->exec();
         }
         else
@@ -109,12 +109,12 @@ void MainWindow::_hidePayloadButtonIsPressed()
             message += "\nSpace available: " + QString::number(availableSpace) + " bits.";
 
             qDebug() << message;
-            _popUpMessage->setWindowTitle("Doh!");
-            _popUpMessage->setText(message);
+            _popUpMessage->setWindowTitle(tr("Doh!"));
+            _popUpMessage->setText(tr(message.toStdString().c_str()));
             _popUpMessage->exec();
         }
     }
-    else qDebug() << "No payloads!";
+    else qDebug() << tr("No payloads!");
 }
 
 void MainWindow::_openStegImageButtonIsPressed()
@@ -145,13 +145,13 @@ QStringList MainWindow::_openFileDialogue(const QString & formats)
 
     QStringList fileNames;
 
-    qDebug() << "Opening file(s)!";
+    qDebug() << tr("Opening file(s)!");
 
     if(openFileDialog.exec())
        fileNames = openFileDialog.selectedFiles();
 
-    if(fileNames.size()) qDebug() << "Opened file(s)!";
-    else qDebug() << "No file(s) selected!";
+    if(fileNames.size()) qDebug() << tr("Opened file(s)!");
+    else qDebug() << tr("No file(s) selected!");
 
     return fileNames;
 }
@@ -161,5 +161,5 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
     if(_coverImage) _coverImageDisplay->setPixmap(QPixmap::fromImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height())));
     if(_stegImage) _stegImageDisplay->setPixmap(QPixmap::fromImage(_stegImage->scaled(_stegImageDisplay->width(),_stegImageDisplay->height())));
 
-    qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
+    qDebug() << tr("Window size: ") << event->size().width() << "x" << event->size().height();
 }

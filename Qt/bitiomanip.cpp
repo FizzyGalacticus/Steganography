@@ -25,7 +25,7 @@ unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 {
     if(bits->size() == sizeof(unsigned int)*8)
     {
-        qDebug() << "Getting number back!";
+        qDebug() << tr("Getting number back!");
         unsigned int number = 0;
 
         for(int i = 0; i < bits->size(); i++)
@@ -56,7 +56,7 @@ QVector<bool> * MainWindow::mergeBits(const QVector<bool> * lhs, const QVector<b
 
 const QVector<bool> * MainWindow::getBitsFromPayloads()
 {
-    qDebug() << "Getting bits from payloads...";
+    qDebug() << tr("Getting bits from payloads...");
 
     QVector<bool> * payloadBits = new QVector<bool>;
     QFile * payloadFile = NULL;
@@ -77,7 +77,7 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
         fileSize = 0;
     }
 
-    qDebug() << "done.";
+    qDebug() << tr("done.");
 
     return payloadBits;
 }
@@ -91,7 +91,7 @@ const QByteArray * MainWindow::getBytesFromFile(const QString & fileName)
 
     if(file->isOpen())
     {
-        qDebug() << "Getting bytes from:" << fileName;
+        qDebug() << tr("Getting bytes from:") << fileName;
 
         fileBytes = new QByteArray(file->readAll());
         file->close();
