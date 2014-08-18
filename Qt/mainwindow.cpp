@@ -20,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _supportedImageFormats("Images ("),
     _coverImage(NULL),
     _scaledImage(NULL),
-    _imageDisplay(new QLabel(this)),
+    _coverImageDisplay(new QLabel(this)),
+    _stegImage(NULL),
     _payloads(NULL),
     _progressBar(new QProgressBar)
 {
@@ -47,7 +48,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::_openCoverImageButtonIsPressed()
 {
-    qDebug() << "Opening file!";
     QStringList images = _openFileDialogue(_supportedImageFormats);
 
     //As long as list isn't empty, we have a file.
@@ -55,21 +55,14 @@ void MainWindow::_openCoverImageButtonIsPressed()
     {
         _coverFilename = images.at(0);
         _coverImage = new QImage(_coverFilename);
-        _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
-        _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
-
-        qDebug() << "File opened!";
+        _scaledImage = new QImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height()));
+        _coverImageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
-    else qDebug() << "No file selected!";
 }
 
 void MainWindow::_openPayloadButtonIsPressed()
 {
-    qDebug() << "Opening file!";
     _payloads = new QStringList(_openFileDialogue(("")));
-
-    if(_payloads->size()) qDebug() << "File(s) opened!";
-    else qDebug() << "No file(s) selected!";
 }
 
 void MainWindow::_hidePayloadButtonIsPressed()
@@ -122,7 +115,13 @@ void MainWindow::_hidePayloadButtonIsPressed()
 
 void MainWindow::_openStegImageButtonIsPressed()
 {
+    QStringList images = _openFileDialogue(_supportedImageFormats);
 
+    if(images.size())
+    {
+        _stegFilename = images.at(0);
+        _stegImage = new QImage(_stegFilename);
+    }
 }
 
 void MainWindow::_recoverFilesButtonIsPressed()
@@ -141,8 +140,13 @@ QStringList MainWindow::_openFileDialogue(const QString & formats)
 
     QStringList fileNames;
 
+    qDebug() << "Opening file(s)!";
+
     if(openFileDialog.exec())
        fileNames = openFileDialog.selectedFiles();
+
+    if(fileNames.size()) qDebug() << "Opened file(s)!";
+    else qDebug() << "No file(s) selected!";
 
     return fileNames;
 }
@@ -152,8 +156,8 @@ void MainWindow::resizeEvent ( QResizeEvent * event )
     if(_coverFilename.size())
     {
         delete _scaledImage;
-        _scaledImage = new QImage(_coverImage->scaled(_imageDisplay->width(),_imageDisplay->height()));
-        _imageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
+        _scaledImage = new QImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height()));
+        _coverImageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
     }
 
     qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();

@@ -57,10 +57,12 @@ private:
 
     //Image Manipulation Variables
     QString _coverFilename;
+    QString _stegFilename;
     QString _supportedImageFormats;
     QImage * _coverImage;
     QImage * _scaledImage;
-    QLabel * _imageDisplay;
+    QLabel * _coverImageDisplay;
+    QImage * _stegImage;
 
     //Payload File Name Variable
     QStringList * _payloads;
