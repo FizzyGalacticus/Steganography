@@ -21,13 +21,18 @@ void MainWindow::_setupButtons()
     connect(_openPayloadButton, SIGNAL(clicked()), this, SLOT(_openPayloadButtonIsPressed()));
     connect(_hidePayloadButton, SIGNAL(clicked()), this, SLOT(_hidePayloadButtonIsPressed()));
 
-    QHBoxLayout * buttons = new QHBoxLayout;
+    QHBoxLayout * hideButtons = new QHBoxLayout;
+    QHBoxLayout * recoverButtons = new QHBoxLayout;
 
-    buttons->addWidget(_openCoverImageButton);
-    buttons->addWidget(_openPayloadButton);
-    buttons->addWidget(_hidePayloadButton);
+    hideButtons->addWidget(_openCoverImageButton);
+    hideButtons->addWidget(_openPayloadButton);
+    hideButtons->addWidget(_hidePayloadButton);
 
-    _mainLayout->addLayout(buttons);
+    recoverButtons->addWidget(_openStegImageButton);
+    recoverButtons->addWidget(_recoverFilesButton);
+
+    _mainLayout->addLayout(hideButtons);
+    _mainLayout->addLayout(recoverButtons);
 }
 
 void MainWindow::_setupImageDisplay()

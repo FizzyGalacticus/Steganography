@@ -47,6 +47,8 @@ private:
     QPushButton * _openCoverImageButton;
     QPushButton * _openPayloadButton;
     QPushButton * _hidePayloadButton;
+    QPushButton * _openStegImageButton;
+    QPushButton * _recoverFilesButton;
 
     //Open File Dialogue
     QStringList _openFileDialogue(const QString &);
