@@ -42,6 +42,12 @@ void MainWindow::_setupLabels()
     QHBoxLayout * imageLabels = new QHBoxLayout;
     QHBoxLayout * images = new QHBoxLayout;
 
+    _coverLabel->setMaximumHeight(15);
+    _stegLabel->setMaximumHeight(15);
+
+    _coverLabel->setAlignment(Qt::AlignCenter);
+    _stegLabel->setAlignment(Qt::AlignCenter);
+
     imageLabels->addWidget(_coverLabel);
     imageLabels->addWidget(_stegLabel);
 
