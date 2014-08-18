@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _recoverFilesButton(new QPushButton("Recover Files!")),
     _supportedImageFormats("Images ("),
     _coverImage(NULL),
-    _scaledImage(NULL),
     _coverImageDisplay(new QLabel(this)),
     _stegImageDisplay(new QLabel(this)),
     _stegImage(NULL),
@@ -56,8 +55,7 @@ void MainWindow::_openCoverImageButtonIsPressed()
     {
         _coverFilename = images.at(0);
         _coverImage = new QImage(_coverFilename);
-        _scaledImage = new QImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height()));
-        _coverImageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
+        _coverImageDisplay->setPixmap(QPixmap::fromImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height())));
     }
 }
 
@@ -155,12 +153,8 @@ QStringList MainWindow::_openFileDialogue(const QString & formats)
 
 void MainWindow::resizeEvent ( QResizeEvent * event )
 {
-    if(_coverFilename.size())
-    {
-        delete _scaledImage;
-        _scaledImage = new QImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height()));
-        _coverImageDisplay->setPixmap(QPixmap::fromImage(*_scaledImage));
-    }
+    if(_coverImage) _coverImageDisplay->setPixmap(QPixmap::fromImage(_coverImage->scaled(_coverImageDisplay->width(),_coverImageDisplay->height())));
+    if(_stegImage) _stegImageDisplay->setPixmap(QPixmap::fromImage(_stegImage->scaled(_stegImageDisplay->width(),_stegImageDisplay->height())));
 
     qDebug() << "Window size: " << event->size().width() << "x" << event->size().height();
 }

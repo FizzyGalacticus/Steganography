@@ -60,7 +60,6 @@ private:
     QString _stegFilename;
     QString _supportedImageFormats;
     QImage * _coverImage;
-    QImage * _scaledImage;
     QLabel * _coverImageDisplay;
     QLabel * _stegImageDisplay;
     QImage * _stegImage;
