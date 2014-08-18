@@ -42,6 +42,7 @@ void MainWindow::_setupImageDisplay()
     QHBoxLayout * images = new QHBoxLayout;
 
     images->addWidget(_coverImageDisplay);
+    images->addWidget(_stegImageDisplay);
 
     _mainLayout->addLayout(images);
 }

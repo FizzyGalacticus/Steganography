@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _coverImage(NULL),
     _scaledImage(NULL),
     _coverImageDisplay(new QLabel(this)),
+    _stegImageDisplay(new QLabel(this)),
     _stegImage(NULL),
     _payloads(NULL),
     _progressBar(new QProgressBar)
@@ -121,6 +122,7 @@ void MainWindow::_openStegImageButtonIsPressed()
     {
         _stegFilename = images.at(0);
         _stegImage = new QImage(_stegFilename);
+        _stegImageDisplay->setPixmap(QPixmap::fromImage(_stegImage->scaled(_stegImageDisplay->width(),_stegImageDisplay->height())));
     }
 }
 

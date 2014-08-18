@@ -62,6 +62,7 @@ private:
     QImage * _coverImage;
     QImage * _scaledImage;
     QLabel * _coverImageDisplay;
+    QLabel * _stegImageDisplay;
     QImage * _stegImage;
 
     //Payload File Name Variable
