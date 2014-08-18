@@ -20,6 +20,8 @@ void MainWindow::_setupButtons()
     connect(_openCoverImageButton, SIGNAL(clicked()), this, SLOT(_openCoverImageButtonIsPressed()));
     connect(_openPayloadButton, SIGNAL(clicked()), this, SLOT(_openPayloadButtonIsPressed()));
     connect(_hidePayloadButton, SIGNAL(clicked()), this, SLOT(_hidePayloadButtonIsPressed()));
+    connect(_openStegImageButton,SIGNAL(clicked()),this,SLOT(_openStegImageButtonIsPressed()));
+    connect(_recoverFilesButton,SIGNAL(clicked()),this,SLOT(_recoverFilesButtonIsPressed()));
 
     QHBoxLayout * hideButtons = new QHBoxLayout;
     QHBoxLayout * recoverButtons = new QHBoxLayout;

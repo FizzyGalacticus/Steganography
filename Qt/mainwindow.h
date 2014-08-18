@@ -28,10 +28,12 @@ public:
     void resizeEvent (QResizeEvent *);
 
 private slots:
-    //Open File buttons
+    //Buttons
     void _openCoverImageButtonIsPressed();
     void _openPayloadButtonIsPressed();
     void _hidePayloadButtonIsPressed();
+    void _openStegImageButtonIsPressed();
+    void _recoverFilesButtonIsPressed();
 
 private:
     Ui::MainWindow *ui;

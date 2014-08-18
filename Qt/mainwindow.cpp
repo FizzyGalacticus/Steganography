@@ -120,6 +120,16 @@ void MainWindow::_hidePayloadButtonIsPressed()
     else qDebug() << "No payloads!";
 }
 
+void MainWindow::_openStegImageButtonIsPressed()
+{
+
+}
+
+void MainWindow::_recoverFilesButtonIsPressed()
+{
+
+}
+
 QStringList MainWindow::_openFileDialogue(const QString & formats)
 {
     //Setup file dialogue
