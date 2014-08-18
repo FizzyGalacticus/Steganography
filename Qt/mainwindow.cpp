@@ -95,7 +95,6 @@ void MainWindow::_hidePayloadButtonIsPressed()
 
             putBitsIntoImage(payloadBits);
 
-            delete _stegImage;
             _stegImage = new QImage("steg.png");
             _stegImageDisplay->setPixmap(QPixmap::fromImage(_stegImage->scaled(_stegImageDisplay->width(),_stegImageDisplay->height())));
 
