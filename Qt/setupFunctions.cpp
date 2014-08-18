@@ -37,19 +37,24 @@ void MainWindow::_setupButtons()
     _mainLayout->addLayout(recoverButtons);
 }
 
-void MainWindow::_setupImageDisplay()
+void MainWindow::_setupLabels()
 {
+    QHBoxLayout * imageLabels = new QHBoxLayout;
     QHBoxLayout * images = new QHBoxLayout;
+
+    imageLabels->addWidget(_coverLabel);
+    imageLabels->addWidget(_stegLabel);
 
     images->addWidget(_coverImageDisplay);
     images->addWidget(_stegImageDisplay);
 
+    _mainLayout->addLayout(imageLabels);
     _mainLayout->addLayout(images);
 }
 
 void MainWindow::_setup()
 {
-    _setupImageDisplay();
+    _setupLabels();
     _setupProgressBar();
     _setupButtons();
 

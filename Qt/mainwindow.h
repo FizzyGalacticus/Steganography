@@ -45,6 +45,12 @@ private:
     //Message Box
     QMessageBox * _popUpMessage;
 
+    //Image Labels
+    QLabel * _coverLabel;
+    QLabel * _stegLabel;
+    QLabel * _coverImageDisplay;
+    QLabel * _stegImageDisplay;
+
     //Buttons
     QPushButton * _openCoverImageButton;
     QPushButton * _openPayloadButton;
@@ -60,8 +66,6 @@ private:
     QString _stegFilename;
     QString _supportedImageFormats;
     QImage * _coverImage;
-    QLabel * _coverImageDisplay;
-    QLabel * _stegImageDisplay;
     QImage * _stegImage;
 
     //Payload File Name Variable
@@ -72,7 +76,7 @@ private:
 
     //Setup functions
     void _setup();
-    void _setupImageDisplay();
+    void _setupLabels();
     void _setupButtons();
     void _setupProgressBar();
 
