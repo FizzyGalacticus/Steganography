@@ -23,12 +23,12 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
 
 unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
 {
-    if(bits->size() == sizeof(unsigned int)*8)
+    if(bits->size() >= 32*8)
     {
         qDebug() << tr("Getting number back!");
         unsigned int number = 0;
 
-        for(int i = 0; i < bits->size(); i++)
+        for(int i = 0; i < 32; i++)
         {
             if(bits->at(i)) number++;
 
@@ -71,7 +71,7 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
 
         const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloads->at(i))));
 
-        if(fileSize) payloadBits = mergeBits(payloadBits,getBitsFromNumber(fileSize));
+        if(fileSize) payloadBits = mergeBits(getBitsFromNumber(fileSize),temp);
         payloadBits = mergeBits(payloadBits,temp);
 
         fileSize = 0;
