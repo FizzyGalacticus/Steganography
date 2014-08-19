@@ -161,7 +161,7 @@ bool MainWindow::writeBytesToFile(const QByteArray * bytes, const QString & file
 void MainWindow::putBitsIntoImage(QVector<bool> * payloadBits)
 {
     QImage * stegImage = new QImage(*_coverImage);
-    stegImage->convertToFormat(QImage::Format_ARGB32);
+    stegImage->convertToFormat(QImage::Format_RGB32);
 
     _progressBar->setRange(0, payloadBits->size());
     _progressBar->setValue(0);
@@ -173,14 +173,14 @@ void MainWindow::putBitsIntoImage(QVector<bool> * payloadBits)
     {
         for(int yPix = 0; yPix < stegImage->height() && payloadBits->size(); yPix++)
         {
-            stegImage->setPixel(xPix,yPix,putBitsIntoRGB(payloadBits,stegImage->pixel(xPix,yPix)));
+            stegImage->setPixel(xPix,yPix,putBitsIntoRGB(payloadBits,QColor(stegImage->pixel(xPix,yPix)).rgba()));
 
             bit += 3;
             _progressBar->setValue(bit);
         }
     }
 
-    stegImage->save("steg.png","png",0);
+    stegImage->save("steg.png","png",-1);
     _progressBar->setValue(0);
     delete stegImage;
 }
@@ -203,7 +203,11 @@ QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
     int b = QColor(rgb).blue();
 
     if(bits->size() >= 1)
+    {
+        qDebug() << "Original:" << r;
         r = putBitIntoNumber(r,bits->at(0));
+        qDebug() << "New:" << r;
+    }
     if(bits->size() >= 2)
         g = putBitIntoNumber(r,bits->at(1));
     if(bits->size() >= 3)
@@ -212,10 +216,7 @@ QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
     if(bits->size() >=3) bits->remove(0,3);
     else bits->remove(0,bits->size());
 
-    newColor += (a << 24);
-    newColor += (r << 16);
-    newColor += (g << 8);
-    newColor += b;
+    newColor = qRgb(r,g,b);
 
     return qRgba(r,g,b,a);
 }
