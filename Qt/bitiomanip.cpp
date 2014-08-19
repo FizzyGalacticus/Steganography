@@ -79,9 +79,6 @@ QVector<bool> * MainWindow::getBitsFromPayloads()
 
     qDebug() << tr("done.");
 
-    for(int i = 0; i < 32; i++)
-        qDebug() << payloadBits->at(i);
-
     return payloadBits;
 }
 
@@ -164,6 +161,7 @@ bool MainWindow::writeBytesToFile(const QByteArray * bytes, const QString & file
 void MainWindow::putBitsIntoImage(QVector<bool> * payloadBits)
 {
     QImage * stegImage = new QImage(*_coverImage);
+    stegImage->convertToFormat(QImage::Format_ARGB32);
 
     _progressBar->setRange(0, payloadBits->size());
     _progressBar->setValue(0);
@@ -199,38 +197,27 @@ int MainWindow::putBitIntoNumber(const int & value,const bool & bit)
 QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
 {
     QRgb newColor = 0;
-    unsigned int a = (rgb >> 24);
-    unsigned int r = 0;
-    unsigned int g = 0;
-    unsigned int b = 0;
+    int a = (rgb >> 24);
+    int r = QColor(rgb).red();
+    int g = QColor(rgb).green();
+    int b = QColor(rgb).blue();
 
     if(bits->size() >= 1)
-    {
-        r = QColor(rgb).red();
         r = putBitIntoNumber(r,bits->at(0));
-    }
     if(bits->size() >= 2)
-    {
-        g = QColor(rgb).green();
         g = putBitIntoNumber(r,bits->at(1));
-    }
     if(bits->size() >= 3)
-    {
-        b = QColor(rgb).blue();
         b = putBitIntoNumber(r,bits->at(2));
-    }
 
     if(bits->size() >=3) bits->remove(0,3);
     else bits->remove(0,bits->size());
 
-    newColor = ((newColor+a) << 24);
-    newColor = ((newColor+r) << 16);
-    newColor = ((newColor+g) << 8);
-    newColor = (newColor+b);
+    newColor += (a << 24);
+    newColor += (r << 16);
+    newColor += (g << 8);
+    newColor += b;
 
-    qDebug() << a << r << g << b;
-
-    return newColor;
+    return qRgba(r,g,b,a);
 }
 
 #endif
