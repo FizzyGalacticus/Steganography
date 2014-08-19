@@ -199,6 +199,7 @@ int MainWindow::putBitIntoNumber(const int & value,const bool & bit)
 QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
 {
     QRgb newColor = 0;
+    unsigned int a = (rgb >> 24);
     unsigned int r = 0;
     unsigned int g = 0;
     unsigned int b = 0;
@@ -222,11 +223,12 @@ QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
     if(bits->size() >=3) bits->remove(0,3);
     else bits->remove(0,bits->size());
 
+    newColor = ((newColor+a) << 24);
     newColor = ((newColor+r) << 16);
     newColor = ((newColor+g) << 8);
     newColor = (newColor+b);
 
-    qDebug() << r << g << b;
+    qDebug() << a << r << g << b;
 
     return newColor;
 }
