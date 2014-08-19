@@ -32,7 +32,7 @@ unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
         {
             if(bits->at(i)) number++;
 
-            if(i != (bits->size() - 1)) number = number << 1;
+            if(i < 31) number = number << 1;
         }
 
         return number;
@@ -54,7 +54,7 @@ QVector<bool> * MainWindow::mergeBits(const QVector<bool> * lhs, const QVector<b
     return newBits;
 }
 
-const QVector<bool> * MainWindow::getBitsFromPayloads()
+QVector<bool> * MainWindow::getBitsFromPayloads()
 {
     qDebug() << tr("Getting bits from payloads...");
 
@@ -62,7 +62,7 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
     QFile * payloadFile = NULL;
     unsigned int fileSize = 0;
 
-    payloadBits = mergeBits(payloadBits,getBitsFromNumber(_payloads->size()));
+    payloadBits = mergeBits(getBitsFromNumber(_payloads->size()),payloadBits);
 
     for(int i = 0; i < _payloads->size(); i++)
     {
@@ -71,13 +71,16 @@ const QVector<bool> * MainWindow::getBitsFromPayloads()
 
         const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloads->at(i))));
 
-        if(fileSize) payloadBits = mergeBits(getBitsFromNumber(fileSize),temp);
+        if(fileSize) payloadBits = mergeBits(payloadBits, getBitsFromNumber(fileSize));
         payloadBits = mergeBits(payloadBits,temp);
 
         fileSize = 0;
     }
 
     qDebug() << tr("done.");
+
+    for(int i = 0; i < 32; i++)
+        qDebug() << payloadBits->at(i);
 
     return payloadBits;
 }
@@ -158,7 +161,7 @@ bool MainWindow::writeBytesToFile(const QByteArray * bytes, const QString & file
     return false;
 }
 
-void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
+void MainWindow::putBitsIntoImage(QVector<bool> * payloadBits)
 {
     QImage * stegImage = new QImage(*_coverImage);
 
@@ -168,47 +171,15 @@ void MainWindow::putBitsIntoImage(const QVector<bool> * payloadBits)
     //Counter for keeping track of which bit we're on
     int bit = 0;
 
-    for(int xPix = 0; xPix < stegImage->width(); xPix++)
+    for(int xPix = 0; xPix < stegImage->width() && payloadBits->size(); xPix++)
     {
-        for(int yPix = 0; yPix < stegImage->height(); yPix++)
+        for(int yPix = 0; yPix < stegImage->height() && payloadBits->size(); yPix++)
         {
-            for(int color = 0; color < 3 && bit < payloadBits->size(); color++)
-            {
-                int value = 0;
-                unsigned int newColor = 0;
+            stegImage->setPixel(xPix,yPix,putBitsIntoRGB(payloadBits,stegImage->pixel(xPix,yPix)));
 
-                switch(color)
-                {
-                    case 0:
-                        value = QColor(stegImage->pixel(xPix,yPix)).red();
-                        value = putBitIntoNumber(value,bit);
-                        newColor += (value << 16);
-                        newColor += (QColor(stegImage->pixel(xPix,yPix)).green() << 8);
-                        newColor += (QColor(stegImage->pixel(xPix,yPix)).blue());
-                    break;
-                    case 1:
-                        value = QColor(stegImage->pixel(xPix,yPix)).green();
-                        value = putBitIntoNumber(value,bit);
-                        newColor += (QColor(stegImage->pixel(xPix,yPix)).red() << 16);
-                        newColor += (value << 8);
-                        newColor += (QColor(stegImage->pixel(xPix,yPix)).blue());
-                    break;
-                    case 2:
-                        value = QColor(stegImage->pixel(xPix,yPix)).blue();
-                        value = putBitIntoNumber(value,bit);
-                        newColor += (QColor(stegImage->pixel(xPix,yPix)).red() << 16);
-                        newColor += (QColor(stegImage->pixel(xPix,yPix)).green() << 8);
-                        newColor += (value);
-                    break;
-                }
-
-                _progressBar->setValue(++bit);
-            }
-
-            if(bit >= payloadBits->size()) break;
+            bit += 3;
+            _progressBar->setValue(bit);
         }
-
-        if(bit >= payloadBits->size()) break;
     }
 
     stegImage->save("steg.png","png",0);
@@ -222,6 +193,42 @@ int MainWindow::putBitIntoNumber(const int & value,const bool & bit)
     if(bit && value % 2 == 0) return value + 1;
     else if(!bit && value % 2 == 1) return value - 1;
     else return value;
+}
+
+
+const QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
+{
+    QRgb newColor = 0;
+    unsigned int r = 0;
+    unsigned int g = 0;
+    unsigned int b = 0;
+
+    if(bits->size() >= 1)
+    {
+        r = QColor(rgb).red();
+        r = putBitIntoNumber(r,bits->at(0));
+    }
+    if(bits->size() >= 2)
+    {
+        g = QColor(rgb).green();
+        g = putBitIntoNumber(r,bits->at(1));
+    }
+    if(bits->size() >= 3)
+    {
+        b = QColor(rgb).blue();
+        b = putBitIntoNumber(r,bits->at(2));
+    }
+
+    if(bits->size() >=3) bits->remove(0,3);
+    else bits->remove(0,bits->size());
+
+    newColor = ((newColor+r) << 16);
+    newColor = ((newColor+g) << 8);
+    newColor = (newColor+b);
+
+    qDebug() << r << g << b;
+
+    return newColor;
 }
 
 #endif

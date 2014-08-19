@@ -86,7 +86,7 @@ private:
     QVector<bool> * mergeBits(const QVector<bool> *, const QVector<bool> *);
 
     //Get bits from files
-    const QVector<bool> * getBitsFromPayloads();
+    QVector<bool> * getBitsFromPayloads();
     const QByteArray * getBytesFromFile(const QString &);
     const QVector<bool> * getBitsFromBytes(const QByteArray *);
 
@@ -95,8 +95,9 @@ private:
     bool writeBytesToFile(const QByteArray *, const QString &);
 
     //Put bits into image
-    void putBitsIntoImage(const QVector<bool> *);
+    void putBitsIntoImage(QVector<bool> *);
     int putBitIntoNumber(const int &,const bool &);
+    const QRgb putBitsIntoRGB(QVector<bool> *,QRgb);
 
 };
 

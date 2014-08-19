@@ -41,9 +41,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     _setup();
 
-    unsigned int myint = 4211920914;
+    unsigned int myint = 107591;
     const QVector<bool> * test = getBitsFromNumber(myint);
-    qDebug() << "# of bits:" << test->size();
+    qDebug() << "Number of bits:" << test->size();
     myint = getNumberFromBits(test);
     qDebug() << "New number:" << myint;
 }

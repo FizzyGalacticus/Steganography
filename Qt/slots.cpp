@@ -31,7 +31,7 @@ void MainWindow::_hidePayloadButtonIsPressed()
             return;
         }
 
-        const QVector<bool> * payloadBits = NULL;
+        QVector<bool> * payloadBits = NULL;
 
         const unsigned int availableSpace = (_coverImage->width()*_coverImage->height()*3);
 
@@ -88,27 +88,20 @@ void MainWindow::_recoverFilesButtonIsPressed()
 {
     QVector<bool> * payloadBits = new QVector<bool>;
     unsigned int numberOfFiles = 0;
-    unsigned int fileSize = 0;
 
-    for(int xPix = 0; xPix < _stegImage->width(); xPix++)
+    for(int xPix = 0; xPix < _stegImage->width() && payloadBits->size() < int(sizeof(unsigned int)*8); xPix++)
     {
-        for(int yPix = 0; yPix < _stegImage->height(); yPix++)
+        for(int yPix = 0; yPix < _stegImage->height() && payloadBits->size() < int(sizeof(unsigned int)*8); yPix++)
         {
-            if(payloadBits->size() == sizeof(unsigned int))
-            {
-                numberOfFiles = getNumberFromBits(payloadBits);
-                break;
-            }
-
             payloadBits->push_back(QColor(_stegImage->pixel(xPix,yPix)).red() & 1);
             payloadBits->push_back(QColor(_stegImage->pixel(xPix,yPix)).green() & 1);
             payloadBits->push_back(QColor(_stegImage->pixel(xPix,yPix)).blue() & 1);
-
         }
-
-        if(numberOfFiles) break;
     }
 
+    numberOfFiles = getNumberFromBits(payloadBits);
+
+    qDebug() << "Bits pulled from image:" << payloadBits->size();
     qDebug() << tr("Number of files hidden in image:") << numberOfFiles;
 }
 
