@@ -97,7 +97,7 @@ private:
     //Put bits into image
     void putBitsIntoImage(QVector<bool> *);
     int putBitIntoNumber(const int &,const bool &);
-    const QRgb putBitsIntoRGB(QVector<bool> *,QRgb);
+    QRgb putBitsIntoRGB(QVector<bool> *,QRgb);
 
 };
 
