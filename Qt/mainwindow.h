@@ -70,7 +70,7 @@ private:
 
     //Payload Variables
     QStringList * _payloadFilenames;
-    int numberOfPayloads;
+    int _numberOfPayloads;
     const QVector<QVector<bool> * > * _payloadBits;
 
     //Progress Bar
@@ -91,7 +91,7 @@ private:
     QVector<bool> * getBitsFromPayloads();
     const QByteArray * getBytesFromFile(const QString &);
     const QVector<bool> * getBitsFromBytes(const QByteArray *);
-    void getPayloadBits(const QByteArray *);
+    void getPayloadBits();
 
     //Send bits to files
     const QByteArray * getBytesFromBits(const QVector<bool> *);

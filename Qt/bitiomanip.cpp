@@ -120,9 +120,38 @@ const QVector<bool> * MainWindow::getBitsFromBytes(const QByteArray * fileBytes)
     return fileBits;
 }
 
-void MainWindow::getPayloadBits(const QByteArray * bytes)
+void MainWindow::getPayloadBits()
 {
+    QVector<QColor> * numberOfPayloadPixels = new QVector<QColor>;
 
+    for(int xPix = 0; xPix < _stegImage->width() && numberOfPayloadPixels->size()<12; xPix++)
+    {
+        for(int yPix = 0; yPix < _stegImage->height() && numberOfPayloadPixels->size()<12; yPix++)
+        {
+            numberOfPayloadPixels->push_back(QColor(_stegImage->pixel(xPix, yPix)));
+        }
+    }
+
+    for(int i = 0; i < numberOfPayloadPixels->size(); i++)
+    {
+        if(i != 11)
+        {
+            _numberOfPayloads += (numberOfPayloadPixels->at(i).red() & 1 ? 1:0);
+            _numberOfPayloads = _numberOfPayloads << 1;
+            _numberOfPayloads += (numberOfPayloadPixels->at(i).green() & 1 ? 1:0);
+            _numberOfPayloads = _numberOfPayloads << 1;
+            _numberOfPayloads += (numberOfPayloadPixels->at(i).blue() & 1 ? 1:0);
+            _numberOfPayloads = _numberOfPayloads << 1;
+        }
+        else
+        {
+            _numberOfPayloads += (numberOfPayloadPixels->at(i).red() & 1 ? 1:0);
+            _numberOfPayloads = _numberOfPayloads << 1;
+            _numberOfPayloads += (numberOfPayloadPixels->at(i).green() & 1 ? 1:0);
+        }
+    }
+
+    qDebug() << _numberOfPayloads << " files hidden!";
 }
 
 const QByteArray * MainWindow::getBytesFromBits(const QVector<bool> * bits)

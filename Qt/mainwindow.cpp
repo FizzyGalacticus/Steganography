@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     _coverImage(NULL),
     _stegImage(NULL),
     _payloadFilenames(NULL),
+    _numberOfPayloads(0),
+    _payloadBits(new QVector<QVector<bool> *>),
     _progressBar(new QProgressBar)
 {
     ui->setupUi(this);
@@ -40,12 +42,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     _setup();
-
-    unsigned int myint = 107591;
-    const QVector<bool> * test = getBitsFromNumber(myint);
-    qDebug() << "Number of bits:" << test->size();
-    myint = getNumberOfFilesFromBits(test);
-    qDebug() << "New number:" << myint;
 }
 
 MainWindow::~MainWindow()

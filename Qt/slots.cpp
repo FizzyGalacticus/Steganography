@@ -86,6 +86,7 @@ void MainWindow::_openStegImageButtonIsPressed()
 
 void MainWindow::_recoverFilesButtonIsPressed()
 {
+    getPayloadBits();
     QVector<bool> * payloadBits = new QVector<bool>;
     unsigned int numberOfFiles = 0;
 
