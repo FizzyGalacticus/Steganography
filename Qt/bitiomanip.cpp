@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include <QDebug>
 #include <QRgb>
+#include <QColor>
 
 const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
 {
@@ -173,7 +174,7 @@ void MainWindow::putBitsIntoImage(QVector<bool> * payloadBits)
     {
         for(int yPix = 0; yPix < stegImage->height() && payloadBits->size(); yPix++)
         {
-            stegImage->setPixel(xPix,yPix,putBitsIntoRGB(payloadBits,QColor(stegImage->pixel(xPix,yPix)).rgba()));
+            stegImage->setPixel(xPix,yPix,putBitsIntoRGB(payloadBits,QColor(stegImage->pixel(xPix,yPix)).rgb()));
 
             bit += 3;
             _progressBar->setValue(bit);
@@ -196,29 +197,33 @@ int MainWindow::putBitIntoNumber(const int & value,const bool & bit)
 
 QRgb MainWindow::putBitsIntoRGB(QVector<bool> * bits, QRgb rgb)
 {
-    QRgb newColor = 0;
-    int a = (rgb >> 24);
-    int r = QColor(rgb).red();
-    int g = QColor(rgb).green();
-    int b = QColor(rgb).blue();
+    QColor * newColor = new QColor(rgb);
+    int r = newColor->red();
+    int g = newColor->green();
+    int b = newColor->blue();
 
-    if(bits->size() >= 1)
-    {
-        qDebug() << "Original:" << r;
-        r = putBitIntoNumber(r,bits->at(0));
-        qDebug() << "New:" << r;
-    }
-    if(bits->size() >= 2)
-        g = putBitIntoNumber(r,bits->at(1));
     if(bits->size() >= 3)
-        b = putBitIntoNumber(r,bits->at(2));
+    {
+        newColor->setRed(putBitIntoNumber(newColor->red(),bits->at(0)));
+        newColor->setGreen(putBitIntoNumber(newColor->green(),bits->at(1)));
+        newColor->setBlue(putBitIntoNumber(newColor->blue(),bits->at(2)));
+    }
+    else if(bits->size() == 2)
+    {
+        newColor->setRed(putBitIntoNumber(newColor->red(), bits->at(0)));
+        newColor->setGreen(putBitIntoNumber(newColor->green(), bits->at(1)));
+    }
+    else newColor->setRed(putBitIntoNumber(newColor->red(), bits->at(0)));
+
+//    if(bits->size() >= 2)
+//        g = putBitIntoNumber(g,bits->at(1));
+//    if(bits->size() >= 3)
+//        b = putBitIntoNumber(b,bits->at(2));
 
     if(bits->size() >=3) bits->remove(0,3);
-    else bits->remove(0,bits->size());
+    else bits->clear();
 
-    newColor = qRgb(r,g,b);
-
-    return qRgba(r,g,b,a);
+    return QColor(r,g,b,newColor->alpha()).rgba();
 }
 
 #endif
