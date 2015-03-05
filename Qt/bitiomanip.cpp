@@ -22,7 +22,7 @@ const QVector<bool> * MainWindow::getBitsFromNumber(const unsigned int &number)
     return numberBits;
 }
 
-unsigned int MainWindow::getNumberFromBits(const QVector<bool> * bits)
+unsigned int MainWindow::getNumberOfFilesFromBits(const QVector<bool> * bits)
 {
     if(bits->size() >= int(sizeof(unsigned int)*8))
     {
@@ -63,14 +63,14 @@ QVector<bool> * MainWindow::getBitsFromPayloads()
     QFile * payloadFile = NULL;
     unsigned int fileSize = 0;
 
-    payloadBits = mergeBits(getBitsFromNumber(_payloads->size()),payloadBits);
+    payloadBits = mergeBits(getBitsFromNumber(_payloadFilenames->size()),payloadBits);
 
-    for(int i = 0; i < _payloads->size(); i++)
+    for(int i = 0; i < _payloadFilenames->size(); i++)
     {
-        payloadFile = new QFile(_payloads->at(i));
+        payloadFile = new QFile(_payloadFilenames->at(i));
         if(payloadFile->exists()) fileSize = payloadFile->size();
 
-        const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloads->at(i))));
+        const QVector<bool> * temp(getBitsFromBytes(getBytesFromFile(_payloadFilenames->at(i))));
 
         if(fileSize) payloadBits = mergeBits(payloadBits, getBitsFromNumber(fileSize));
         payloadBits = mergeBits(payloadBits,temp);
@@ -118,6 +118,11 @@ const QVector<bool> * MainWindow::getBitsFromBytes(const QByteArray * fileBytes)
     }
 
     return fileBits;
+}
+
+void MainWindow::getPayloadBits(const QByteArray * bytes)
+{
+
 }
 
 const QByteArray * MainWindow::getBytesFromBits(const QVector<bool> * bits)

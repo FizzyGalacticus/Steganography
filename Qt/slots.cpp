@@ -18,12 +18,12 @@ void MainWindow::_openCoverImageButtonIsPressed()
 
 void MainWindow::_openPayloadButtonIsPressed()
 {
-    _payloads = new QStringList(_openFileDialogue(("")));
+    _payloadFilenames = new QStringList(_openFileDialogue(("")));
 }
 
 void MainWindow::_hidePayloadButtonIsPressed()
 {
-    if(_payloads)
+    if(_payloadFilenames)
     {
         if(!_coverImage)
         {
@@ -35,11 +35,11 @@ void MainWindow::_hidePayloadButtonIsPressed()
 
         const unsigned int availableSpace = (_coverImage->width()*_coverImage->height()*3);
 
-        unsigned int numberOfBitsNeeded = sizeof(unsigned int) + (_payloads->size() * sizeof(unsigned int));
+        unsigned int numberOfBitsNeeded = sizeof(unsigned int) + (_payloadFilenames->size() * sizeof(unsigned int));
 
-        for(int i = 0; i < _payloads->size(); i++)
+        for(int i = 0; i < _payloadFilenames->size(); i++)
         {
-            QFile * payload = new QFile(_payloads->at(i));
+            QFile * payload = new QFile(_payloadFilenames->at(i));
 
             if(payload->exists()) numberOfBitsNeeded += (payload->size() * 8);
         }
@@ -99,7 +99,7 @@ void MainWindow::_recoverFilesButtonIsPressed()
         }
     }
 
-    numberOfFiles = getNumberFromBits(payloadBits);
+    numberOfFiles = getNumberOfFilesFromBits(payloadBits);
 
     qDebug() << "Bits pulled from image:" << payloadBits->size();
     qDebug() << tr("Number of files hidden in image:") << numberOfFiles;

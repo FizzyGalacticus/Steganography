@@ -68,8 +68,10 @@ private:
     QImage * _coverImage;
     QImage * _stegImage;
 
-    //Payload File Name Variable
-    QStringList * _payloads;
+    //Payload Variables
+    QStringList * _payloadFilenames;
+    int numberOfPayloads;
+    const QVector<QVector<bool> * > * _payloadBits;
 
     //Progress Bar
     QProgressBar * _progressBar;
@@ -82,13 +84,14 @@ private:
 
     //General bit manipulation
     const QVector<bool> * getBitsFromNumber(const unsigned int &);
-    unsigned int getNumberFromBits(const QVector<bool> *);
+    unsigned int getNumberOfFilesFromBits(const QVector<bool> *);
     QVector<bool> * mergeBits(const QVector<bool> *, const QVector<bool> *);
 
     //Get bits from files
     QVector<bool> * getBitsFromPayloads();
     const QByteArray * getBytesFromFile(const QString &);
     const QVector<bool> * getBitsFromBytes(const QByteArray *);
+    void getPayloadBits(const QByteArray *);
 
     //Send bits to files
     const QByteArray * getBytesFromBits(const QVector<bool> *);
